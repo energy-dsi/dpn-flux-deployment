@@ -1,0 +1,132 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: karpenter
+  namespace: flux-system
+spec:
+  interval: 1h0m0s
+  type: "oci"
+  url: oci://public.ecr.aws/karpenter
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: karpenter-crd
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  driftDetection:
+    mode: enabled
+  targetNamespace: karpenter
+  releaseName: karpenter-crd
+  install:
+    createNamespace: true
+  chart:
+    spec:
+      chart: karpenter-crd
+      sourceRef:
+        kind: HelmRepository
+        name: karpenter
+        namespace: flux-system
+      version: ${karpenter_version}
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: karpenter
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  dependsOn:
+    - name: karpenter-crd
+  driftDetection:
+    mode: enabled
+  targetNamespace: karpenter
+  releaseName: karpenter
+  install:
+    createNamespace: true
+  chart:
+    spec:
+      chart: karpenter
+      sourceRef:
+        kind: HelmRepository
+        name: karpenter
+        namespace: flux-system
+      version: ${karpenter_version}
+  values:
+    settings:
+      clusterName: ${cluster_name}
+      # clusterEndpoint: ${cluster_endpoint} no longer needed for eks
+      interruptionQueue: ${karpenter_interruption_queue}
+    controller:
+      resources:
+        requests:
+          cpu: 1
+          memory: 1Gi
+        limits:
+          cpu: 1
+          memory: 1Gi
+    serviceAccount:
+      annotations:
+        eks.amazonaws.com/role-arn: ${karpenter_controller_role_arn}
+---
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: karpenter-manifests
+#   namespace: flux-system
+# spec:
+#   interval: 10m0s
+#   path: ./clusters/eso-nonprod-eks/platform/karpenter-manifests
+#   prune: true
+#   sourceRef:
+#     kind: GitRepository
+#     name: flux-system
+#   dependsOn:
+#     - name: karpenter-crd
+# ---
+
+# ---
+# apiVersion: source.toolkit.fluxcd.io/v1beta2
+# kind: OCIRepository
+# metadata:
+#   name: karpenter-crd
+#   namespace: flux-system
+# spec:
+#   interval: 1h0m0s
+#   url: oci://public.ecr.aws/karpenter/karpenter-crd
+#   # provider: aws
+#   ref:
+#     semver: "1.0.2"
+# ---
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: karpenter-crd
+#   namespace: flux-system
+# spec:
+#   targetNamespace: karpenter
+#   interval: 1h
+#   retryInterval: 2m
+#   timeout: 5m
+#   wait: true
+#   prune: true
+#   path: "./"
+#   sourceRef:
+#     kind: OCIRepository
+#     name: karpenter-crd
+# ---
+
+# apiVersion: helm.toolkit.fluxcd.io/v2
+# kind: HelmRelease
+# metadata:
+#   name: podinfo
+#   namespace: default
+# spec:
+#   interval: 10m
+#   chartRef:
+#     kind: OCIRepository
+#     name: podinfo
+#     namespace: default
+#   values:
+#     replicaCount: 2

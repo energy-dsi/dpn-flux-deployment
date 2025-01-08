@@ -1,0 +1,21 @@
+#
+# Copyright (C) 2024 Telicent Limited
+#
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+
+metadata:
+  name: allow-ingress-to-federation-server
+
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: federator-server
+  action: ALLOW
+  rules:
+    - from:
+        - source:
+            principals: [] # Principals are patched when namespace service accounts are known (in profiles)
+      to:
+        - operation:
+            methods: ["*"]

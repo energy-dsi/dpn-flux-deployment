@@ -1,0 +1,113 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: istio
+  namespace: flux-system
+spec:
+  interval: 1h0m0s
+  url: https://istio-release.storage.googleapis.com/charts
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: istio-base
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  driftDetection:
+    mode: warn
+  targetNamespace: istio-system
+  releaseName: istio-base
+  install:
+    createNamespace: true
+  chart:
+    spec:
+      chart: base
+      sourceRef:
+        kind: HelmRepository
+        name: istio
+        namespace: flux-system
+      version: "1.23.3"
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: istio-istiod
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  dependsOn:
+    - name: istio-base
+  driftDetection:
+    mode: warn
+  targetNamespace: istio-system
+  releaseName: istio-istiod
+  install:
+    createNamespace: true
+  chart:
+    spec:
+      chart: istiod
+      sourceRef:
+        kind: HelmRepository
+        name: istio
+        namespace: flux-system
+      version: "1.23.3"
+  values:
+    pilot:
+      autoscaleEnabled: true
+      autoscaleMax: 5
+      autoscaleMin: 3
+    # global:
+    #   meshID: shared1
+    #   multiCluster:
+    #     clusterName: karpenter
+    #     network: sharednetwork1
+
+    meshConfig:
+      accessLogFile: /dev/stdout
+      extensionProviders:
+      - envoyExtAuthzHttp:
+          headersToDownstreamOnDeny:
+          - set-cookie
+          - content-type
+          headersToUpstreamOnAllow:
+          - authorization
+          - x-auth-request-access-token
+          includeHeadersInCheck:
+          - cookie
+          port: "4080"
+          service: oauth2-proxy-external.tc-system.svc.cluster.local
+        name: oauth2-proxy-apps
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: istio-gateway
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  dependsOn:
+    - name: istio-istiod
+  driftDetection:
+    mode: warn
+  targetNamespace: istio-system
+  releaseName: istio-gateway
+  install:
+    createNamespace: true
+  chart:
+    spec:
+      chart: gateway
+      sourceRef:
+        kind: HelmRepository
+        name: istio
+        namespace: flux-system
+      version: "*"
+  values:
+    labels:
+      istio: ingressgateway
+    service:
+      annotations:
+        service.beta.kubernetes.io/aws-load-balancer-type: external
+        service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
+        service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+        service.beta.kubernetes.io/aws-load-balancer-attributes: load_balancing.cross_zone.enabled=true
