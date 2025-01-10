@@ -229,18 +229,18 @@ spec:
   path: ./clusters/aks-dpn-sbx-uksouth-001/workload/core
   prune: true
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: telicent-workload-federation
-  namespace: flux-system
-spec:
-  interval: 1m
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  path: ./clusters/aks-dpn-sbx-uksouth-001/workload/federation
-  prune: true
+#apiVersion: kustomize.toolkit.fluxcd.io/v1
+#kind: Kustomization
+#metadata:
+#  name: telicent-workload-federation
+#  namespace: flux-system
+#spec:
+#  interval: 1m
+#  sourceRef:
+#    kind: GitRepository
+#    name: flux-system
+#  path: ./clusters/aks-dpn-sbx-uksouth-001/workload/federation
+#  prune: true
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
