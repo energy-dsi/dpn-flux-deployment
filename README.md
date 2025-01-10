@@ -29,5 +29,5 @@ After running the bootstrap command, any operation on the cluster (including Flu
   --branch=<my-branch> \
   --private-key-file=<path/to/ssh/private.key> \
   --password=<key-passphrase> \
-  --path=clusters/my-cluster`
+  --path=clusters/my-cluster
 ```
