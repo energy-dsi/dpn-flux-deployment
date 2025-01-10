@@ -22,7 +22,7 @@ patches:
           provider: sops
         postBuild:
           substitute:
-            cert_manager_email: bruce.hartley@mesh-ai.com
+            cert_manager_email: CHANGE_TO_EMAIL
             cluster_endpoint:
             cluster_env: CHANGE_TO_CLUSTER_NAME
             cluster_name: CHANGE_TO_CLUSTER_NAME
