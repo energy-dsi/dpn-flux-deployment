@@ -4,13 +4,6 @@ resources:
   - gotk-components.yaml
   - gotk-sync.yaml
 patches:
-  - patch: |
-      - op: add
-        path: /spec/template/spec/containers/0/args/-
-        value: --ssh-hostkey-algos=rsa-sha2-512,rsa-sha2-256
-    target:
-      kind: Deployment
-      name: (source-controller|image-automation-controller)
   - patch: |-
       apiVersion: kustomize.toolkit.fluxcd.io/v1
       kind: Kustomization
