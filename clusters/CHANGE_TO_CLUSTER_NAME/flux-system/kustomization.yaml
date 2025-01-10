@@ -22,11 +22,11 @@ patches:
           provider: sops
         postBuild:
           substitute:
-            cert_manager_email: bruce.hartley@mesh-ai.com
+            cert_manager_email: CHANGE_TO_CERT_MANAGER_EMAIL
             cluster_endpoint:
-            cluster_env: aks-dpn-sbx-uksouth-001
-            cluster_name: aks-dpn-sbx-uksouth-001
-            domain: "neso.energy"
+            cluster_env: CHANGE_TO_CLUSTER_NAME
+            cluster_name: CHANGE_TO_CLUSTER_NAME
+            domain: "CHANGE_TO_DOMAIN"
             env: dpn
             kafka_brokers_iam:
             karpenter_version: "1.0.6"
