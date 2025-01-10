@@ -18,7 +18,7 @@ namespace: tc-federation
 namePrefix: incoming-
 
 resources:
-  - ../../../telicent/profiles/oss/federation/pbac-federation-filter
+  - ../../../../../telicent/profiles/oss/federation/pbac-federation-filter
 
 configMapGenerator:
   - name: pbac-federation-filter-config

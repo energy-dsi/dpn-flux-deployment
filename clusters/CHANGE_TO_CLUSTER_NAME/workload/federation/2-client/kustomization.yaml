@@ -16,7 +16,7 @@ kind: Kustomization
 namespace: tc-federation
 
 resources:
-  - ../../../telicent/profiles/oss/federation/client
+  - ../../../../../telicent/profiles/oss/federation/client
 
 configMapGenerator:
   - name: federator-client-properties

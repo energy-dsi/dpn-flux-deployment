@@ -5,7 +5,7 @@ kind: Kustomization
 namespace: tc-federation
 
 resources:
-  - ../../../telicent/profiles/oss/federation/server
+  - ../../../../../telicent/profiles/oss/federation/server
 
 components:
   - ./patches/virtualservice/host/federation

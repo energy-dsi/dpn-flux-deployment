@@ -5,7 +5,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - ../../../telicent/profiles/oss/query
+  - ../../../../../telicent/profiles/oss/query
 # Generic Component to substitute your domain in Istio policy
 
 configMapGenerator:

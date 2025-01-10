@@ -24,9 +24,9 @@ patches:
           substitute:
             cert_manager_email: bruce.hartley@mesh-ai.com
             cluster_endpoint:
-            cluster_env: aks-dpn-sbx-uksouth-001
-            cluster_name: aks-dpn-sbx-uksouth-001
-            domain: "neso.energy"
+            cluster_env: CHANGE_TO_CLUSTER_NAME
+            cluster_name: CHANGE_TO_CLUSTER_NAME
+            domain: "ADD_DOMAIN_NAME"
             env: dpn
             kafka_brokers_iam:
             karpenter_version: "1.0.6"
