@@ -11,7 +11,7 @@ resources:
 components:
   - ../components/patches/virtualservice/host/apps
   # Optional depending on Istio configuration
-  # - ../components/patches/authorizationpolicy/serviceaccount
+  - ../components/patches/authorizationpolicy/serviceaccount
 
 # NB this is for illustrative purposes only. Secrets management is out of the
 # scope of the OSS deployment.

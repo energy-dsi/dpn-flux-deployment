@@ -11,7 +11,7 @@ resources:
 components:
   - ../components/patches/virtualservice/host/apps
   # Optional depending on Istio configuration
-  # - ../components/patches/authorizationpolicy/serviceaccount
+  - ../components/patches/authorizationpolicy/serviceaccount
 
 patches:
   - patch: |-
@@ -36,6 +36,7 @@ configMapGenerator:
 
 secretGenerator:
   - name: kafka-auth-config
+    namespace: tc-graph
     files:
       - server/patches/secret/kafka-config.properties
     options:

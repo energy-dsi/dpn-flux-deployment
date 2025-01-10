@@ -18,4 +18,4 @@ configMapGenerator:
 components:
   - ../components/patches/virtualservice/host/apps
   # Optional depending on Istio configuration
-  # - ../components/patches/authorizationpolicy/serviceaccount
+  - ../components/patches/authorizationpolicy/serviceaccount
