@@ -1,0 +1,35 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - flux-system
+  - platform.yaml
+patches:
+  - patch: |
+      - op: add
+        path: /spec/template/spec/containers/0/args/-
+        value: --ssh-hostkey-algos=rsa-sha2-512,rsa-sha2-256
+    target:
+      kind: Deployment
+      name: (source-controller|image-automation-controller)
+  - patch: |-
+      apiVersion: kustomize.toolkit.fluxcd.io/v1
+      kind: Kustomization
+      metadata:
+        name: flux-system
+        namespace: flux-system
+      spec:
+        decryption:
+          provider: sops
+        postBuild:
+          substitute:
+            cert_manager_email: bruce.hartley@mesh-ai.com
+            cluster_endpoint:
+            cluster_env: aks-dpn-sbx-uksouth-001
+            cluster_name: aks-dpn-sbx-uksouth-001
+            domain: "neso.energy"
+            env: dpn
+            kafka_brokers_iam:
+            karpenter_version: "1.0.6"
+            region: eu-west-2
+    target:
+      kind: Kustomization

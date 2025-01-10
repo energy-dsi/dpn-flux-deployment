@@ -1,0 +1,49 @@
+apiVersion: networking.istio.io/v1
+kind: Gateway
+metadata:
+  name: ingress-gateway
+  namespace: istio-system
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+      - "*"
+  - port:
+      number: 443
+      name: https-keycloak
+      protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      credentialName: istio-ingressgateway-cert-keycloak
+    hosts:
+      - "keycloak-data-sharing.neso.energy"
+  - port:
+      number: 443
+      name: https-data-sharing
+      protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      credentialName: istio-ingressgateway-cert-data-sharing
+    hosts:
+      - "data-sharing.neso.energy"
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: istio-ingressgateway-cert-data-sharing
+  namespace: istio-system
+spec:
+  secretName: istio-ingressgateway-cert-data-sharing
+  commonName: "data-sharing.neso.energy"
+  dnsNames:
+      - "data-sharing.neso.energy"
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+    group: cert-manager.io
+---

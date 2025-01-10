@@ -1,0 +1,127 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: hello-world
+  labels:
+    app: hello-world
+    istio-injection: enabled
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-world
+  namespace: hello-world
+  labels:
+    app: hello-world
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-world
+  template:
+    metadata:
+      labels:
+        app: hello-world
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: hello-world
+          image: nginx:latest
+          # command: [ "/label-studio/deploy/wait-for-postgres.sh", "acid-minimal-cluster", "label-studio" ]
+          ports:
+            - name: http
+              containerPort: 80
+          securityContext:
+            readOnlyRootFilesystem: false
+          resources:
+            limits:
+              cpu: "0.5"
+              memory: "500Mi"
+            requests:
+              cpu: "0.1"
+              memory: "100Mi"
+          volumeMounts:
+          - name: nginx-config-volume
+            mountPath: /etc/nginx/conf.d/default.conf
+            subPath: nginx.conf
+      volumes:
+      - name: nginx-config-volume
+        configMap:
+          name: nginx-config
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+  namespace: hello-world
+data:
+  nginx.conf: |
+    server {
+        listen 80;
+        server_name _;
+
+        location /hello-world {
+            default_type text/html;
+            return 200 '<h1>Hello, World!</h1> <p>Your IP as seen by this server is: $http_x_forwarded_for $http_x_forwarded_client_cert</p>';
+            proxy_http_version 1.1; 
+        }
+
+        location / {
+            root /usr/share/nginx/html;
+            index index.html;
+        }
+    }
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-world-svc
+  namespace: hello-world
+  annotations:
+spec:
+  ports:
+  - name: http
+    port: 8083
+    targetPort: 80
+  selector:
+    app: hello-world
+  type: ClusterIP
+
+# ---
+# apiVersion: networking.istio.io/v1
+# kind: Gateway
+# metadata:
+#   name: hello-world-gateway
+#   namespace: hello-world  # Should match the namespace of your application
+# spec:
+#   selector:
+#     istio: ingressgateway  # Use Istio's default ingress gateway
+#   servers:
+#   - port:
+#       number: 80
+#       name: http
+#       protocol: HTTP
+#     hosts:
+#     - "*"
+
+---
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: hello-world
+  namespace: hello-world
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - istio-system/ingress-gateway
+  http:
+  - match:
+    - uri:
+        prefix: "/hello-world"
+    route:
+    - destination:
+        host: hello-world-svc.hello-world.svc.cluster.local  # Fully qualified service name
+        port:
+          number: 8083

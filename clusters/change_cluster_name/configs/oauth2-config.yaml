@@ -1,0 +1,227 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app.kubernetes.io/name: oauth2-proxy-external
+    app.kubernetes.io/version: v7.5.1
+    telicent.io/resource: "true"
+  name: oauth2-proxy-external
+  namespace: tc-system
+---
+apiVersion: v1
+data:
+  OAUTH2_PROXY_API_ROUTES: /api/.*$
+  OAUTH2_PROXY_APPROVAL_PROMPT: none
+  OAUTH2_PROXY_COOKIE_DOMAIN: data-sharing.neso.energy
+  OAUTH2_PROXY_COOKIE_EXPIRE: 5m
+  OAUTH2_PROXY_COOKIE_REFRESH: 4m
+  OAUTH2_PROXY_COOKIE_SECURE: "true"
+  OAUTH2_PROXY_EMAIL_DOMAINS: "*"
+  OAUTH2_PROXY_HTTP_ADDRESS: 0.0.0.0:4080
+  OAUTH2_PROXY_OIDC_ISSUER_URL: https://keycloak-data-sharing.neso.energy/realms/Istio
+  # OAUTH2_PROXY_OIDC_ISSUER_URL: https://keycloak.sandbox-01.labs.mesh-ai.com/realms/Istio
+  OAUTH2_PROXY_PASS_ACCESS_TOKEN: "true"
+  OAUTH2_PROXY_INSECURE_OIDC_SKIP_ISSUER_VERIFICATION: "true"
+  OAUTH2_PROXY_PASS_AUTHORIZATION_HEADER: "true"
+  OAUTH2_PROXY_PROVIDER: oidc
+  OAUTH2_PROXY_REDIRECT_URL: https://data-sharing.neso.energy/oauth2/callback
+  OAUTH2_PROXY_REVERSE_PROXY: "true"
+  OAUTH2_PROXY_SCOPE: openid email groups profile
+  OAUTH2_PROXY_SET_AUTHORIZATION_HEADER: "true"
+  OAUTH2_PROXY_SET_XAUTHREQUEST: "true"
+  OAUTH2_PROXY_SILENCE_PING_LOGGING: "true"
+  OAUTH2_PROXY_SKIP_PROVIDER_BUTTON: "true"
+  OAUTH2_PROXY_UPSTREAMS: static://200
+  # These three should be deployed via a secret for a production environment
+  OAUTH2_PROXY_CLIENT_ID: telicent
+  OAUTH2_PROXY_CLIENT_SECRET: HxBl5nFudDd7FhsFzJ3lsPDEFM5v7UCw
+  # OAUTH2_PROXY_CLIENT_SECRET: O8zl9aw2GszzQ6DAsKlSaL7Z91gGl2HX
+  OAUTH2_PROXY_COOKIE_SECRET: hskznqyznC1mZlae96BUh6bLdVPB6aU1D645sMh9eEE
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/name: oauth2-proxy-external
+    app.kubernetes.io/version: v7.5.1
+  name: oauth2-proxy-external
+  namespace: tc-system
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: oauth2-proxy-external
+    app.kubernetes.io/version: v7.5.1
+    telicent.io/resource: "true"
+  name: oauth2-proxy-external
+  namespace: tc-system
+spec:
+  ports:
+    - name: http
+      port: 4080
+      protocol: TCP
+      targetPort: http
+  selector:
+    app.kubernetes.io/name: oauth2-proxy-external
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: oauth2-proxy-external
+    app.kubernetes.io/version: v7.5.1
+    telicent.io/resource: "true"
+  name: oauth2-proxy-external
+  namespace: tc-system
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: oauth2-proxy-external
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: oauth2-proxy-external
+        app.kubernetes.io/version: v7.5.1
+        telicent.io/resource: "true"
+    spec:
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: oauth2-proxy-external
+          image: quay.io/oauth2-proxy/oauth2-proxy:v7.5.1
+          imagePullPolicy: Always
+          livenessProbe:
+            httpGet:
+              path: /ping
+              port: http
+              scheme: HTTP
+            initialDelaySeconds: 0
+            timeoutSeconds: 1
+          name: oauth2-proxy
+          ports:
+            - containerPort: 4080
+              name: http
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: http
+              scheme: HTTP
+            initialDelaySeconds: 0
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            runAsGroup: 10101
+            runAsNonRoot: true
+            runAsUser: 10101
+            seccompProfile:
+              type: RuntimeDefault
+      securityContext:
+        fsGroup: 10101
+        runAsGroup: 10101
+        runAsNonRoot: true
+        runAsUser: 10101
+        seccompProfile:
+          type: RuntimeDefault
+      serviceAccountName: oauth2-proxy-external
+---
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: oidc-login-ingress
+  namespace: tc-system
+spec:
+  gateways:
+    - istio-system/ingress-gateway
+  hosts:
+    - data-sharing.neso.energy
+  http:
+    - match:
+        - uri:
+            prefix: /oauth2
+      route:
+        - destination:
+            host: oauth2-proxy-external
+            port:
+              number: 4080
+---
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-ingress-to-external-oauth2-proxy
+  namespace: tc-system
+spec:
+  action: ALLOW
+  rules:
+    - from:
+        - source:
+            principals:
+              - cluster.local/ns/istio-system/sa/istio-gateway
+      to:
+        - operation:
+            methods:
+              - "*"
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: oauth2-proxy-external
+---
+apiVersion: security.istio.io/v1
+kind: RequestAuthentication
+metadata:
+  name: authenticate-users
+  namespace: istio-system
+spec:
+  selector:
+    matchLabels:
+      telicent.io/resource: "true"
+  jwtRules:
+  - forwardOriginalToken: true
+    issuer: https://keycloak-data-sharing.neso.energy/realms/Istio
+    jwksUri: https://keycloak-data-sharing.neso.energy/realms/Istio/protocol/openid-connect/certs
+    # issuer: https://keycloak.sandbox-01.labs.mesh-ai.com/realms/Istio
+    # jwksUri: https://keycloak.sandbox-01.labs.mesh-ai.com/realms/Istio/protocol/openid-connect/certs
+---
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: authenticate-apps
+  namespace: istio-system
+spec:
+  action: CUSTOM
+  provider:
+    name: oauth2-proxy-apps
+  rules:
+    - to:
+        - operation:
+            hosts:
+              - data-sharing.neso.energy
+            notHosts:
+              - keycloak-data-sharing.neso.energy
+            notPaths:
+              - /realms/*
+              - /realms*
+              - /realms/Istio
+              - /.well-known/acme-challenge/*
+              - /oauth2/*
+              - /oauth2
+            paths:
+              - /
+              - /*
+            
+  selector:
+    matchLabels:
+      istio: ingressgateway
+---

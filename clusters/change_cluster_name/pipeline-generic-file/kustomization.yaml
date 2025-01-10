@@ -1,0 +1,12 @@
+#
+# Copyright (C) 2024 Telicent Limited
+#
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Update with whichever namespace you want to run the job in
+namespace: data
+
+resources:
+  - ns.yaml
+  - producer-generic-file

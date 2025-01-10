@@ -1,0 +1,256 @@
+#apiVersion: kustomize.toolkit.fluxcd.io/v1
+#kind: Kustomization
+#metadata:
+#  name: karpenter
+#  namespace: flux-system
+#spec:
+#  interval: 1m
+#  timeout: 5m
+#  sourceRef:
+#    kind: GitRepository
+#    name: flux-system
+#  path: ./infrastructure/karpenter
+#  prune: false
+#
+#---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: redis
+  namespace: flux-system
+spec:
+  interval: 1m
+  timeout: 5m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./infrastructure/redis
+  prune: true
+
+  # healthChecks:
+  #   - apiVersion: v1
+  #     kind: CustomResourceDefinition
+  #     name: appmesh-controller-webhook-service
+  #     namespace: appmesh-system
+---
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: karpenter-manifests
+#   namespace: flux-system
+# spec:
+#   dependsOn:
+#     - name: karpenter
+#   interval: 1m
+#   timeout: 5m
+#   sourceRef:
+#     kind: GitRepository
+#     name: flux-system
+#   path: ./infrastructure/karpenter/manifests
+#   prune: true
+#   # healthChecks:
+#   #   - apiVersion: v1
+#   #     kind: CustomResourceDefinition
+#   #     name: appmesh-controller-webhook-service
+#   #     namespace: appmesh-system
+# ---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cert-manager
+  namespace: flux-system
+spec:
+  interval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./infrastructure/cert-manager
+  prune: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cert-manager-issuers
+  namespace: flux-system
+spec:
+  interval: 1m
+  dependsOn:
+    - name: cert-manager
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./infrastructure/cert-manager/issuers
+  prune: true
+---
+ apiVersion: kustomize.toolkit.fluxcd.io/v1
+ kind: Kustomization
+ metadata:
+   name: istio
+   namespace: flux-system
+ spec:
+   interval: 1m
+   dependsOn:
+     - name: cert-manager
+   sourceRef:
+     kind: GitRepository
+     name: flux-system
+   path: ./infrastructure/istio
+   prune: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: external-dns
+  namespace: flux-system
+spec:
+  interval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./infrastructure/dns
+  prune: true
+---
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: load-balancer-controller
+#   namespace: flux-system
+# spec:
+#   interval: 1m
+#   sourceRef:
+#     kind: GitRepository
+#     name: flux-system
+#   path: ./infrastructure/loadbalancer
+#   prune: true
+# ---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: grafana
+  namespace: flux-system
+spec:
+  interval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./infrastructure/grafana
+  prune: true
+---
+#apiVersion: kustomize.toolkit.fluxcd.io/v1
+#kind: Kustomization
+#metadata:
+#  name: mongodb
+#  namespace: flux-system
+#spec:
+#  interval: 1m
+#  sourceRef:
+#    kind: GitRepository
+#    name: flux-system
+#  path: ./infrastructure/mongodb
+#  prune: true
+#---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: keycloak
+  namespace: flux-system
+spec:
+  interval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./infrastructure/keycloak
+  prune: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: spire
+  namespace: flux-system
+spec:
+  interval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./infrastructure/spire
+  prune: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: spire-config
+  namespace: flux-system
+spec:
+  interval: 1m
+  dependsOn:
+     - name: spire
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./clusters/aks-dpn-sbx-uksouth-001/spire
+  prune: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: app-configs
+  namespace: flux-system
+spec:
+  interval: 30m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./clusters/aks-dpn-sbx-uksouth-001/configs
+  prune: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: pipeline-data
+  namespace: flux-system
+spec:
+  interval: 30m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./clusters/aks-dpn-sbx-uksouth-001/pipeline-generic-file
+  prune: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: telicent-workload-core
+  namespace: flux-system
+spec:
+  interval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./clusters/aks-dpn-sbx-uksouth-001/workload/core
+  prune: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: telicent-workload-federation
+  namespace: flux-system
+spec:
+  interval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./clusters/aks-dpn-sbx-uksouth-001/workload/federation
+  prune: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: kafka-ui
+  namespace: flux-system
+spec:
+  interval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./clusters/aks-dpn-sbx-uksouth-001/kafka-ui
+  prune: true
