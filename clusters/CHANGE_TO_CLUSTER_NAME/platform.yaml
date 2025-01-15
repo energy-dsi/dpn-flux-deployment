@@ -213,16 +213,3 @@ spec:
 #    name: flux-system
 #  path: ./clusters/CHANGE_TO_YOUR_CLUSTER_NAME/workload/federation
 #  prune: true
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: kafka-ui
-  namespace: flux-system
-spec:
-  interval: 1m
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  path: ./clusters/CHANGE_TO_YOUR_CLUSTER_NAME/kafka-ui
-  prune: true
