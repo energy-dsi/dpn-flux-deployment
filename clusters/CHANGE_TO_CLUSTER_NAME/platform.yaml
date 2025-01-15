@@ -172,7 +172,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./clusters/aks-dpn-sbx-uksouth-001/configs
+  path: ./clusters/CHANGE_TO_YOUR_CLUSTER_NAME/configs
   prune: true
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -185,7 +185,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./clusters/aks-dpn-sbx-uksouth-001/pipeline-generic-file
+  path: ./clusters/CHANGE_TO_YOUR_CLUSTER_NAME/pipeline-generic-file
   prune: true
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -198,7 +198,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./clusters/aks-dpn-sbx-uksouth-001/workload/core
+  path: ./clusters/CHANGE_TO_YOUR_CLUSTER_NAME/workload/core
   prune: true
 ---
 #apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -211,7 +211,7 @@ spec:
 #  sourceRef:
 #    kind: GitRepository
 #    name: flux-system
-#  path: ./clusters/aks-dpn-sbx-uksouth-001/workload/federation
+#  path: ./clusters/CHANGE_TO_YOUR_CLUSTER_NAME/workload/federation
 #  prune: true
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -224,5 +224,5 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./clusters/aks-dpn-sbx-uksouth-001/kafka-ui
+  path: ./clusters/CHANGE_TO_YOUR_CLUSTER_NAME/kafka-ui
   prune: true

@@ -21,7 +21,7 @@ spec:
       mode: SIMPLE
       credentialName: istio-ingressgateway-cert-keycloak
     hosts:
-      - "keycloak-data-sharing.neso.energy"
+      - "CHANGE_TO_KEYCLOAK_HOSTNAME"
   - port:
       number: 443
       name: https-data-sharing
@@ -30,7 +30,7 @@ spec:
       mode: SIMPLE
       credentialName: istio-ingressgateway-cert-data-sharing
     hosts:
-      - "data-sharing.neso.energy"
+      - "CHANGE_TO_DATA_SHARING_HOSTNAME"
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
@@ -39,9 +39,9 @@ metadata:
   namespace: istio-system
 spec:
   secretName: istio-ingressgateway-cert-data-sharing
-  commonName: "data-sharing.neso.energy"
+  commonName: "CHANGE_TO_DATA_SHARING_HOSTNAME"
   dnsNames:
-      - "data-sharing.neso.energy"
+      - "CHANGE_TO_DATA_SHARING_HOSTNAME"
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
