@@ -145,7 +145,7 @@ spec:
   gateways:
     - istio-system/ingress-gateway
   hosts:
-    - data-sharing.neso.energy
+    - CHANGE_TO_DATA_SHARING_HOSTNAME
   http:
     - match:
         - uri:
