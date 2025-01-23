@@ -10,7 +10,7 @@ resources:
 components:
   - ./patches/virtualservice/host/federation
   # Optional: Change ingress principal
-  # - ./patches/authorizationpolicy/serviceaccount
+  - ./patches/authorizationpolicy/serviceaccount
 configMapGenerator:
   - name: federator-server-properties
     files:
