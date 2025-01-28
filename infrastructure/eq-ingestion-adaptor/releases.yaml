@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: eq-ingestion
+
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: eq-ingestion-adaptor
+  namespace: flux-system
+spec:
+  interval: 1h0m0s
+  url: oci://INSERT_YOUR_ACR_URL_HERE
+  type: oci
+  provider: azure
+---
+
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: eq-ingestion-adaptor
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  driftDetection:
+    mode: enabled
+  targetNamespace: eq-ingestion
+  releaseName: eq-ingestion-adaptor
+  install:
+    createNamespace: true
+  upgrade:
+    force: true
+  chart:
+    spec:
+      chart: helm/adaptor
+      sourceRef:
+        kind: HelmRepository
+        name: eq-ingestion-adaptor
+        namespace: flux-system
+      version: "*"
+  values:
+    image_semver: INSERT_YOUR_IMAGE_TAG_HERE
+    image_name: INSERT_YOUR_ACR_URL_HERE/dsi/adaptor
