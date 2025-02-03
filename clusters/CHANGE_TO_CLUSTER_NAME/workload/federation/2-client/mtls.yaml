@@ -122,7 +122,7 @@ spec:
   dnsNames:
   - "${data_producer_domain}"
   uris:
-  - spiffe://${cluster_name}.data-spikes.labs.mesh-ai.com/client
+  - spiffe://${cluster_name}.neso.energy/client
   privateKey:
     algorithm: ECDSA       # Specify ECDSA (Elliptic Curve)
     size: 256              # Common EC key sizes are 256, 384, or 521
