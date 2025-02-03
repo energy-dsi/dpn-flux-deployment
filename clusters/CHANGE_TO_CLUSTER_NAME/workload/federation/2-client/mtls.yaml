@@ -1,0 +1,129 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: vault-issuer
+  namespace: istio-system
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: vault-issuer
+  namespace: istio-system
+spec:
+  vault:
+    server: ${vault_url}
+    path: pki/sign/neso
+    auth:
+      kubernetes:
+        role: ${cluster_name} # this is the auth role created in vault
+        mountPath: /v1/auth/${cluster_name} # this is the path where the auth role is mounted in vault
+        serviceAccountRef:
+          name: vault-issuer
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: vault-issuer
+  namespace: istio-system
+rules:
+  - apiGroups: ['']
+    resources: ['serviceaccounts/token']
+    resourceNames: ['vault-issuer']
+    verbs: ['create']
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: vault-issuer
+  namespace: istio-system
+subjects:
+  - kind: ServiceAccount
+    name: cert-manager
+    namespace: cert-manager
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: vault-issuer
+---
+
+# https://cert-manager.io/docs/configuration/vault/#option-1-vault-authentication-method-use-jwtoidc-auth
+
+#this perms are required to list secrets for mtls
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: federator-client-role
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: federator-client-role-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: federator-client-role
+subjects:
+  - kind: ServiceAccount
+    name: federator-client
+---
+apiVersion: networking.istio.io/v1
+kind: ServiceEntry
+metadata:
+  name: originate-mtls-federator-client
+spec:
+  hosts:
+  - ${data_producer_domain}
+  ports:
+  - number: 80
+    name: http-port
+    protocol: HTTP2
+    targetPort: 443
+  - number: 443
+    name: https-port
+    protocol: HTTPS
+  resolution: DNS
+---
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+metadata:
+  name: originate-mtls-federator-client
+spec:
+  workloadSelector:
+    matchLabels:
+      app: federator-client
+  host: ${data_producer_domain}
+  trafficPolicy:
+    loadBalancer:
+      simple: ROUND_ROBIN
+    portLevelSettings:
+    - port:
+        number: 80
+      tls:
+        mode: MUTUAL
+        credentialName: federator-client-mtls # this must match the secret created earlier to hold client certs, and works only when DR has a workloadSelector
+        sni: ${data_producer_domain}
+        # subjectAltNames: # can be enabled if the certificate was generated with SAN as specified in previous section
+        # - ${data_producer_domain}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: federator-client-mtls
+  namespace: hello-world  # this namespace so that pod can access the secret
+spec:
+  secretName: federator-client-mtls
+  issuerRef:
+    name: vault-issuer
+  commonName: "${data_producer_domain}"
+  dnsNames:
+  - "${data_producer_domain}"
+  uris:
+  - spiffe://${cluster_name}.data-spikes.labs.mesh-ai.com/client
+  privateKey:
+    algorithm: ECDSA       # Specify ECDSA (Elliptic Curve)
+    size: 256              # Common EC key sizes are 256, 384, or 521
+---

@@ -31,5 +31,7 @@ patches:
             kafka_brokers_iam:
             karpenter_version: "1.0.6"
             region: eu-west-2
+            data_producer_domain: "CHANGE_TO_DATA_PRODUCER_DOMAIN"
+            vault_url: "https://ca.dsm.neso.energy"
     target:
       kind: Kustomization
