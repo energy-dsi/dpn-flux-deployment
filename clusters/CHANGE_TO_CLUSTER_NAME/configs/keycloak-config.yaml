@@ -13,7 +13,7 @@ metadata:
   namespace: keycloak
 spec:
   hosts:
-  - "keycloak-data-sharing.neso.energy"
+  - "${keycloak_domain}"
   gateways:
   - istio-system/ingress-gateway
   http:
@@ -27,22 +27,6 @@ spec:
           number: 80
 ---
 #prod namespace cert-manager
-# apiVersion: cert-manager.io/v1
-# kind: Certificate
-# metadata:
-#   name: istio-ingressgateway-certs
-#   namespace: cert-manager
-# spec:
-#   secretName: istio-ingressgateway-certs
-#   commonName: "keycloak-data-sharing.neso.energy"
-#   dnsNames:
-#       - "keycloak-data-sharing.neso.energy"
-#   issuerRef:
-#     name: letsencrypt-prod
-#     kind: ClusterIssuer
-#     group: cert-manager.io
-# ---
-# namespace istio-system
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
@@ -50,9 +34,9 @@ metadata:
   namespace: istio-system
 spec:
   secretName: istio-ingressgateway-cert-keycloak
-  commonName: "keycloak-data-sharing.neso.energy"
+  commonName: "${keycloak_domain}"
   dnsNames:
-      - "keycloak-data-sharing.neso.energy"
+      - "${keycloak_domain}"
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer

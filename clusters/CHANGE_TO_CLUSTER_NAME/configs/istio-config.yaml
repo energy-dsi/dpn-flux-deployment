@@ -7,6 +7,16 @@ spec:
   selector:
     istio: ingressgateway
   servers:
+  - port: 
+      number: 443
+      name: https-mtls
+      protocol: HTTPS
+    tls:
+      mode: MUTUAL
+      credentialName: federator-server-mtls
+    hosts:
+      - "${federator_server_domain}"
+      - "hello-world.${domain}"
   - port:
       number: 80
       name: http
@@ -21,7 +31,7 @@ spec:
       mode: SIMPLE
       credentialName: istio-ingressgateway-cert-keycloak
     hosts:
-      - "keycloak-data-sharing.neso.energy"
+      - "${keycloak_domain}"
   - port:
       number: 443
       name: https-data-sharing
@@ -30,7 +40,7 @@ spec:
       mode: SIMPLE
       credentialName: istio-ingressgateway-cert-data-sharing
     hosts:
-      - "data-sharing.neso.energy"
+      - "${ia_domain}"
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
@@ -39,9 +49,9 @@ metadata:
   namespace: istio-system
 spec:
   secretName: istio-ingressgateway-cert-data-sharing
-  commonName: "data-sharing.neso.energy"
+  commonName: "${ia_domain}"
   dnsNames:
-      - "data-sharing.neso.energy"
+      - "${ia_domain}"
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer

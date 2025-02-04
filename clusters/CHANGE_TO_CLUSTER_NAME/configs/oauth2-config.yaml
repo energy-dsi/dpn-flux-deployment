@@ -13,19 +13,18 @@ apiVersion: v1
 data:
   OAUTH2_PROXY_API_ROUTES: /api/.*$
   OAUTH2_PROXY_APPROVAL_PROMPT: none
-  OAUTH2_PROXY_COOKIE_DOMAIN: data-sharing.neso.energy
+  OAUTH2_PROXY_COOKIE_DOMAIN: ${ia_domain}
   OAUTH2_PROXY_COOKIE_EXPIRE: 5m
   OAUTH2_PROXY_COOKIE_REFRESH: 4m
   OAUTH2_PROXY_COOKIE_SECURE: "true"
   OAUTH2_PROXY_EMAIL_DOMAINS: "*"
   OAUTH2_PROXY_HTTP_ADDRESS: 0.0.0.0:4080
-  OAUTH2_PROXY_OIDC_ISSUER_URL: https://keycloak-data-sharing.neso.energy/realms/Istio
-  # OAUTH2_PROXY_OIDC_ISSUER_URL: https://keycloak.sandbox-01.labs.mesh-ai.com/realms/Istio
+  OAUTH2_PROXY_OIDC_ISSUER_URL: https://${keycloak_domain}/realms/Istio
   OAUTH2_PROXY_PASS_ACCESS_TOKEN: "true"
   OAUTH2_PROXY_INSECURE_OIDC_SKIP_ISSUER_VERIFICATION: "true"
   OAUTH2_PROXY_PASS_AUTHORIZATION_HEADER: "true"
   OAUTH2_PROXY_PROVIDER: oidc
-  OAUTH2_PROXY_REDIRECT_URL: https://data-sharing.neso.energy/oauth2/callback
+  OAUTH2_PROXY_REDIRECT_URL: https://${ia_domain}/oauth2/callback
   OAUTH2_PROXY_REVERSE_PROXY: "true"
   OAUTH2_PROXY_SCOPE: openid email groups profile
   OAUTH2_PROXY_SET_AUTHORIZATION_HEADER: "true"
@@ -36,7 +35,6 @@ data:
   # These three should be deployed via a secret for a production environment
   OAUTH2_PROXY_CLIENT_ID: telicent
   OAUTH2_PROXY_CLIENT_SECRET: HxBl5nFudDd7FhsFzJ3lsPDEFM5v7UCw
-  # OAUTH2_PROXY_CLIENT_SECRET: O8zl9aw2GszzQ6DAsKlSaL7Z91gGl2HX
   OAUTH2_PROXY_COOKIE_SECRET: hskznqyznC1mZlae96BUh6bLdVPB6aU1D645sMh9eEE
 kind: ConfigMap
 metadata:
@@ -147,7 +145,7 @@ spec:
   gateways:
     - istio-system/ingress-gateway
   hosts:
-    - data-sharing.neso.energy
+    - ${ia_domain}
   http:
     - match:
         - uri:
@@ -189,10 +187,8 @@ spec:
       telicent.io/resource: "true"
   jwtRules:
   - forwardOriginalToken: true
-    issuer: https://keycloak-data-sharing.neso.energy/realms/Istio
-    jwksUri: https://keycloak-data-sharing.neso.energy/realms/Istio/protocol/openid-connect/certs
-    # issuer: https://keycloak.sandbox-01.labs.mesh-ai.com/realms/Istio
-    # jwksUri: https://keycloak.sandbox-01.labs.mesh-ai.com/realms/Istio/protocol/openid-connect/certs
+    issuer: https://${keycloak_domain}/realms/Istio
+    jwksUri: https://${keycloak_domain}/realms/Istio/protocol/openid-connect/certs
 ---
 apiVersion: security.istio.io/v1
 kind: AuthorizationPolicy
@@ -207,9 +203,9 @@ spec:
     - to:
         - operation:
             hosts:
-              - data-sharing.neso.energy
+              - ${ia_domain}
             notHosts:
-              - keycloak-data-sharing.neso.energy
+              - ${keycloak_domain}
             notPaths:
               - /realms/*
               - /realms*

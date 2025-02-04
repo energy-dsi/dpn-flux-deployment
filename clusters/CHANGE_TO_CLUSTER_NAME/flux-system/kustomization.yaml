@@ -15,16 +15,17 @@ patches:
           provider: sops
         postBuild:
           substitute:
-            cert_manager_email: CHANGE_TO_CERT_MANAGER_EMAIL
+            cert_manager_email: 
             cluster_endpoint:
-            cluster_env: CHANGE_TO_CLUSTER_NAME
-            cluster_name: CHANGE_TO_CLUSTER_NAME
-            domain: "CHANGE_TO_DOMAIN"
+            cluster_env: 
+            cluster_name: 
+            data_producer1_domain: 
+            domain:
             env: dpn
+            federator_server_domain: 
+            ia_domain: 
             kafka_brokers_iam:
-            karpenter_version: "1.0.6"
-            region: eu-west-2
-            data_producer_domain: "CHANGE_TO_DATA_PRODUCER_DOMAIN"
+            keycloak_domain: 
             vault_url: "https://ca.dsm.neso.energy"
     target:
       kind: Kustomization
