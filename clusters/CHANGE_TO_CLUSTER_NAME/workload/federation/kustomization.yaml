@@ -4,3 +4,5 @@ resources:
   - ns.yaml
   - 2-client
   - 4-incoming-filter
+  - 1-server
+  - 3-outgoing-filter

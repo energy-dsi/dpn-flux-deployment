@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: vault-issuer
+  namespace: istio-system
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: vault-issuer
+  namespace: istio-system
+spec:
+  vault:
+    server: ${vault_url}
+    path: pki/sign/neso
+    auth:
+      kubernetes:
+        role: ${cluster_name} # this is the auth role created in vault
+        mountPath: /v1/auth/${cluster_name} # this is the path where the auth role is mounted in vault
+        serviceAccountRef:
+          name: vault-issuer
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: vault-issuer
+  namespace: istio-system
+rules:
+  - apiGroups: ['']
+    resources: ['serviceaccounts/token']
+    resourceNames: ['vault-issuer']
+    verbs: ['create']
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: vault-issuer
+  namespace: istio-system
+subjects:
+  - kind: ServiceAccount
+    name: cert-manager
+    namespace: cert-manager
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: vault-issuer
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: federator-server-mtls
+  namespace: istio-system  # this namespace so that gateway can access the secret
+spec:
+  secretName: federator-server-mtls
+  issuerRef:
+    name: vault-issuer
+  commonName: "${federator_server_domain}"
+  dnsNames:
+  - "${federator_server_domain}"
+  - "hello-world.${domain}"
+  uris:
+  - spiffe://${cluster_name}.${domain}/server
+  privateKey:
+    algorithm: ECDSA       # Specify ECDSA (Elliptic Curve)
+    size: 256              # Common EC key sizes are 256, 384, or 521
+---
+
+# https://cert-manager.io/docs/configuration/vault/#option-1-vault-authentication-method-use-jwtoidc-auth

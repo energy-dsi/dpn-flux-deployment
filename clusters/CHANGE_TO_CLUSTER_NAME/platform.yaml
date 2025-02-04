@@ -1,18 +1,3 @@
-#apiVersion: kustomize.toolkit.fluxcd.io/v1
-#kind: Kustomization
-#metadata:
-#  name: karpenter
-#  namespace: flux-system
-#spec:
-#  interval: 1m
-#  timeout: 5m
-#  sourceRef:
-#    kind: GitRepository
-#    name: flux-system
-#  path: ./infrastructure/karpenter
-#  prune: false
-#
-#---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -26,34 +11,7 @@ spec:
     name: flux-system
   path: ./infrastructure/redis
   prune: true
-
-  # healthChecks:
-  #   - apiVersion: v1
-  #     kind: CustomResourceDefinition
-  #     name: appmesh-controller-webhook-service
-  #     namespace: appmesh-system
 ---
-# apiVersion: kustomize.toolkit.fluxcd.io/v1
-# kind: Kustomization
-# metadata:
-#   name: karpenter-manifests
-#   namespace: flux-system
-# spec:
-#   dependsOn:
-#     - name: karpenter
-#   interval: 1m
-#   timeout: 5m
-#   sourceRef:
-#     kind: GitRepository
-#     name: flux-system
-#   path: ./infrastructure/karpenter/manifests
-#   prune: true
-#   # healthChecks:
-#   #   - apiVersion: v1
-#   #     kind: CustomResourceDefinition
-#   #     name: appmesh-controller-webhook-service
-#   #     namespace: appmesh-system
-# ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -100,32 +58,6 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: external-dns
-  namespace: flux-system
-spec:
-  interval: 1m
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  path: ./infrastructure/dns
-  prune: true
----
-# apiVersion: kustomize.toolkit.fluxcd.io/v1
-# kind: Kustomization
-# metadata:
-#   name: load-balancer-controller
-#   namespace: flux-system
-# spec:
-#   interval: 1m
-#   sourceRef:
-#     kind: GitRepository
-#     name: flux-system
-#   path: ./infrastructure/loadbalancer
-#   prune: true
-# ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
   name: grafana
   namespace: flux-system
 spec:
@@ -136,19 +68,6 @@ spec:
   path: ./infrastructure/grafana
   prune: true
 ---
-#apiVersion: kustomize.toolkit.fluxcd.io/v1
-#kind: Kustomization
-#metadata:
-#  name: mongodb
-#  namespace: flux-system
-#spec:
-#  interval: 1m
-#  sourceRef:
-#    kind: GitRepository
-#    name: flux-system
-#  path: ./infrastructure/mongodb
-#  prune: true
-#---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -172,7 +91,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./clusters/aks-dpn-sbx-uksouth-001/configs
+  path: ./clusters/CLUSTER_NAME/configs
   prune: true
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -185,7 +104,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./clusters/aks-dpn-sbx-uksouth-001/pipeline-generic-file
+  path: ./clusters/CLUSTER_NAME/pipeline-generic-file
   prune: true
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -198,21 +117,21 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./clusters/aks-dpn-sbx-uksouth-001/workload/core
+  path: ./clusters/CLUSTER_NAME/workload/core
   prune: true
 ---
-#apiVersion: kustomize.toolkit.fluxcd.io/v1
-#kind: Kustomization
-#metadata:
-#  name: telicent-workload-federation
-#  namespace: flux-system
-#spec:
-#  interval: 1m
-#  sourceRef:
-#    kind: GitRepository
-#    name: flux-system
-#  path: ./clusters/aks-dpn-sbx-uksouth-001/workload/federation
-#  prune: true
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+ name: telicent-workload-federation
+ namespace: flux-system
+spec:
+ interval: 1m
+ sourceRef:
+   kind: GitRepository
+   name: flux-system
+ path: ./clusters/CLUSTER_NAME/workload/federation
+ prune: true
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -224,5 +143,5 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./clusters/aks-dpn-sbx-uksouth-001/kafka-ui
+  path: ./clusters/CLUSTER_NAME/kafka-ui
   prune: true
