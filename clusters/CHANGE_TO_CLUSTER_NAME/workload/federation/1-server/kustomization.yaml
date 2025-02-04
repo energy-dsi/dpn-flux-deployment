@@ -23,8 +23,9 @@ secretGenerator:
       - ./patches/config/access.json
     options:
       disableNameSuffixHash: true
-  - name: kafka-auth-config
-    files:
-      - patches/config/kafka-config.properties
-    options:
-      disableNameSuffixHash: true
+  # already exists in the client    
+  # - name: kafka-auth-config
+  #   files:
+  #     - patches/config/kafka-config.properties
+  #   options:
+  #     disableNameSuffixHash: true
