@@ -18,7 +18,7 @@ spec:
       containers:
         - name: producer
           # image: telicent/generic-file-adapter:0.1.0
-          image: acrdpnsbxuksouth001.azurecr.io/neso/generic-file-adapter:latest
+          image: CONTAINER_IMAGE/generic-file-adapter:latest
           imagePullPolicy: Always
           envFrom:
             - configMapRef:
