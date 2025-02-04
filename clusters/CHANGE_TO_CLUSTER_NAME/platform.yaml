@@ -91,24 +91,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-<<<<<<< HEAD
-  path: ./clusters/CLUSTER_NAME/configs
-  prune: true
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: pipeline-data
-  namespace: flux-system
-spec:
-  interval: 30m
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  path: ./clusters/CLUSTER_NAME/pipeline-generic-file
-=======
   path: ./clusters/CHANGE_TO_YOUR_CLUSTER_NAME/configs
->>>>>>> 87bab76faa58846e347ab810197770db6c617e47
   prune: true
 ---
 #apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -134,8 +117,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-<<<<<<< HEAD
-  path: ./clusters/CLUSTER_NAME/workload/core
+  path: ./clusters/CHANGE_TO_YOUR_CLUSTER_NAME/workload/core
   prune: true
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -148,35 +130,5 @@ spec:
  sourceRef:
    kind: GitRepository
    name: flux-system
- path: ./clusters/CLUSTER_NAME/workload/federation
+ path: ./clusters/CHANGE_TO_YOUR_CLUSTER_NAME/workload/federation
  prune: true
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: kafka-ui
-  namespace: flux-system
-spec:
-  interval: 1m
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  path: ./clusters/CLUSTER_NAME/kafka-ui
-  prune: true
-=======
-  path: ./clusters/CHANGE_TO_YOUR_CLUSTER_NAME/workload/core
-  prune: true
----
-#apiVersion: kustomize.toolkit.fluxcd.io/v1
-#kind: Kustomization
-#metadata:
-#  name: telicent-workload-federation
-#  namespace: flux-system
-#spec:
-#  interval: 1m
-#  sourceRef:
-#    kind: GitRepository
-#    name: flux-system
-#  path: ./clusters/CHANGE_TO_YOUR_CLUSTER_NAME/workload/federation
-#  prune: true
->>>>>>> 87bab76faa58846e347ab810197770db6c617e47
