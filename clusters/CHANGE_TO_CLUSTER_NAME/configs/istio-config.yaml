@@ -7,7 +7,7 @@ spec:
   selector:
     istio: ingressgateway
   servers:
-  - port: 
+  - port:
       number: 443
       name: https-mtls
       protocol: HTTPS
@@ -17,6 +17,7 @@ spec:
     hosts:
       - "${federator_server_domain}"
       - "hello-world.${domain}"
+      - "${authorisation_api_domain}"
   - port:
       number: 80
       name: http

@@ -58,6 +58,7 @@ spec:
   dnsNames:
   - "${federator_server_domain}"
   - "hello-world.${domain}"
+  - "${authorisation_api_domain}"
   uris:
   - spiffe://${cluster_name}.${domain}/server
   privateKey:
