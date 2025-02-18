@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: authorisation-api
+  namespace: tc-federation
+  labels:
+    app: authorisation-api
+data:
+  MONGO_PROTOCOL: 'mongodb'
+  MONGO_USER: mongo_user_here
+  MONGO_HOST: YOUR.MONGO.HOSTNAME.HERE.COM
+  MONGO_PORT: YOUR.MONGO.PORT.HERE
+  MONGO_QUERY_STRING: '?<ADD_MONGO_QUERY_STRING>' # e.g. ?ssl=true&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@COSMOS_DB_NAME@

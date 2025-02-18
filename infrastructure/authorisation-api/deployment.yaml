@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: authorisation-api
+    k8s-app: authorisation-api
+  name: authorisation-api
+  namespace: tc-federation
+spec:
+  selector:
+    matchLabels:
+      k8s-app: authorisation-api
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        k8s-app: authorisation-api
+    spec:
+      restartPolicy: Always
+      nodeSelector:
+        kubernetes.io/arch: amd64
+      containers:
+      - name: authorisation-api
+        image: "extacrdsmsbxuksouth001.azurecr.io/authorisation-api:v20250210.5"
+        imagePullPolicy: Always
+        envFrom:
+          - configMapRef:
+              name: authorisation-api
+        env:
+          - name: MONGO_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: telicent-access-db-password
+                key: password
+          - name: MONGODB_URI
+            value: "$(MONGO_PROTOCOL)://$(MONGO_USER):$(MONGO_PASSWORD)@$(MONGO_HOST):$(MONGO_PORT)/dsi$(MONGO_QUERY_STRING)"
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /actuator/health
+            port: http
+            scheme: HTTP
+          periodSeconds: 10
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /actuator/health
+            port: http
+            scheme: HTTP
+          initialDelaySeconds: 20
+          periodSeconds: 10
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        resources:
+          requests:
+            cpu: 100m
+            memory: 200Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 1000
+          seccompProfile:
+            type: RuntimeDefault
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp-dir
+      volumes:
+      - emptyDir: {}
+        name: tmp-dir

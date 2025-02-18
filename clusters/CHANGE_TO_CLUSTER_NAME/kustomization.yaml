@@ -23,7 +23,8 @@ patches:
             domain:
             env: dpn
             federator_server_domain: 
-            ia_domain: 
+            ia_domain:
+            authorisation_api_domain:
             kafka_brokers_iam:
             keycloak_domain: 
             vault_url: "https://ca.dsm.neso.energy"
