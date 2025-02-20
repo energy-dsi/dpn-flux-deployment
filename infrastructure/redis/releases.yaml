@@ -16,7 +16,7 @@ spec:
   interval: 1h0m0s
   url: oci://registry-1.docker.io/bitnamicharts/redis
   ref:
-    semver: "20.3.0"
+    semver: "20.7.1"
 
 ---
 
@@ -46,4 +46,4 @@ spec:
     cluster:
       enabled: true
     sentinel:
-      enabled: true
+      enabled: false
