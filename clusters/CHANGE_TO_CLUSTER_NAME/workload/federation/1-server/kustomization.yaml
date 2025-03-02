@@ -11,6 +11,7 @@ components:
   - ./patches/virtualservice/host/federation
   # Optional: Change ingress principal
   - ./patches/authorizationpolicy/serviceaccount
+
 configMapGenerator:
   - name: federator-server-properties
     files:
@@ -18,14 +19,8 @@ configMapGenerator:
     behavior: replace
 
 secretGenerator:
-  - name: federator-server-access-map
+  - name: kafka-auth-config
     files:
-      - ./patches/config/access.json
+      - patches/config/kafka-config.properties
     options:
       disableNameSuffixHash: true
-  # already exists in the client    
-  # - name: kafka-auth-config
-  #   files:
-  #     - patches/config/kafka-config.properties
-  #   options:
-  #     disableNameSuffixHash: true

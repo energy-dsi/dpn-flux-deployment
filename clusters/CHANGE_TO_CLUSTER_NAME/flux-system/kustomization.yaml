@@ -15,11 +15,14 @@ patches:
           provider: sops
         postBuild:
           substitute:
+            authorisation_api_domain:
             cert_manager_email: 
             cluster_endpoint:
             cluster_env: 
             cluster_name: 
             data_producer1_domain: 
+            data_producer2_domain:
+            data_producer3_domain:
             domain:
             env: dpn
             federator_server_domain: 

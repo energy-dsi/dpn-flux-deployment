@@ -27,7 +27,7 @@ spec:
         kind: HelmRepository
         name: istio
         namespace: flux-system
-      version: "1.23.3"
+      version: "1.23.5"
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -51,18 +51,12 @@ spec:
         kind: HelmRepository
         name: istio
         namespace: flux-system
-      version: "1.23.3"
+      version: "1.23.5"
   values:
     pilot:
       autoscaleEnabled: true
       autoscaleMax: 5
       autoscaleMin: 3
-    # global:
-    #   meshID: shared1
-    #   multiCluster:
-    #     clusterName: karpenter
-    #     network: sharednetwork1
-
     meshConfig:
       accessLogFile: /dev/stdout
       extensionProviders:
@@ -101,7 +95,7 @@ spec:
         kind: HelmRepository
         name: istio
         namespace: flux-system
-      version: "*"
+      version: "1.23.5"
   values:
     labels:
       istio: ingressgateway

@@ -30,13 +30,13 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: federator-server
-        app.kubernetes.io/version: "0.4.1"
+        app.kubernetes.io/version: "0.15.0"
     spec:
       serviceAccountName: federator-server
       containers:
         - name: federator-server
-          image: telicent/telicent-federation-server:0.4.1
-          imagePullPolicy: IfNotPresent
+          image: extacrdsmsbxuksouth001.azurecr.io/federation-server:0.15.0
+          imagePullPolicy: Always
           envFrom:
             - configMapRef:
                 name: federator-server-config.env
@@ -54,28 +54,7 @@ spec:
           volumeMounts:
             - name: config-volume
               mountPath: /config
-            - name: access-map-volume
-              mountPath: /access-map
       volumes:
         - name: config-volume
           configMap:
             name: federator-server-properties
-        - name: access-map-volume
-          secret:
-            secretName: federator-server-access-map
-          # readinessProbe:
-          #   httpGet:
-          #     path: /access/health
-          #     port: 8080
-          #     scheme: HTTP
-          #   initialDelaySeconds: 60
-          #   periodSeconds: 30
-          #   timeoutSeconds: 2
-          # livenessProbe:
-          #   httpGet:
-          #     path: /access/health
-          #     port: 8080
-          #     scheme: HTTP
-          #   initialDelaySeconds: 60
-          #   periodSeconds: 30
-          #   timeoutSeconds: 2

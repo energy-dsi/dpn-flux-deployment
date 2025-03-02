@@ -15,16 +15,18 @@ patches:
           provider: sops
         postBuild:
           substitute:
-            cert_manager_email:
+            authorisation_api_domain:
+            cert_manager_email: 
             cluster_endpoint:
             cluster_env: 
             cluster_name: 
             data_producer1_domain: 
+            data_producer2_domain:
+            data_producer3_domain:
             domain:
             env: dpn
             federator_server_domain: 
-            ia_domain:
-            authorisation_api_domain:
+            ia_domain: 
             kafka_brokers_iam:
             keycloak_domain: 
             vault_url: "https://ca.dsm.neso.energy"

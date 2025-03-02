@@ -1,14 +1,16 @@
+# all the namespace here get overriden by the kustomization.yaml in the same directory
+
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: vault-issuer
-  namespace: istio-system
+  namespace: tc-federation
 ---
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
   name: vault-issuer
-  namespace: istio-system
+  namespace: tc-federation
 spec:
   vault:
     server: ${vault_url}
@@ -24,7 +26,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: vault-issuer
-  namespace: istio-system
+  namespace: tc-federation
 rules:
   - apiGroups: ['']
     resources: ['serviceaccounts/token']
@@ -35,7 +37,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: vault-issuer
-  namespace: istio-system
+  namespace: tc-federation
 subjects:
   - kind: ServiceAccount
     name: cert-manager
@@ -45,24 +47,3 @@ roleRef:
   kind: Role
   name: vault-issuer
 ---
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: federator-server-mtls
-  namespace: istio-system  # this namespace so that gateway can access the secret
-spec:
-  secretName: federator-server-mtls
-  issuerRef:
-    name: vault-issuer
-  commonName: "${federator_server_domain}"
-  dnsNames:
-  - "${federator_server_domain}"
-  - "${authorisation_api_domain}"
-  uris:
-  - spiffe://${cluster_name}.${domain}/server
-  privateKey:
-    algorithm: ECDSA       # Specify ECDSA (Elliptic Curve)
-    size: 256              # Common EC key sizes are 256, 384, or 521
----
-
-# https://cert-manager.io/docs/configuration/vault/#option-1-vault-authentication-method-use-jwtoidc-auth
