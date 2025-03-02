@@ -1,3 +1,5 @@
+# sets up the necessary resources for mTLS, including service accounts, roles, role bindings, 
+# and certificates, using Vault as the certificate issuer.
 apiVersion: v1
 kind: ServiceAccount
 metadata:
