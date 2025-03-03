@@ -17,7 +17,8 @@ namespace: tc-federation
 
 resources:
   - ../../../../../telicent/profiles/oss/federation/client
-  - ./mtls.yaml
+  - ./mtls-issuer.yaml
+  - ./mtls-client.yaml
 
 configMapGenerator:
   - name: federator-client-properties
@@ -26,12 +27,7 @@ configMapGenerator:
     behavior: replace
 
 secretGenerator:
-  - name: federator-client-secret-config
-    envs:
-      - ./patches/config/client-secret.env
-    options:
-      disableNameSuffixHash: true
-  - name: kafka-auth-config
+  - name: kafka-auth-config-client
     files:
       - patches/secret/kafka-config.properties
     options:

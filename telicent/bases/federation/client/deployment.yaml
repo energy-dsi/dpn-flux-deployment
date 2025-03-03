@@ -30,12 +30,12 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: federator-client
-        app.kubernetes.io/version: "0.4.1"
+        app.kubernetes.io/version: "0.15.0"
     spec:
       serviceAccountName: federator-client
       containers:
         - name: federator-client
-          image: telicent/telicent-federation-client:0.4.1
+          image: extacrdsmsbxuksouth001.azurecr.io/federation-client:0.15.0
           imagePullPolicy: IfNotPresent
           envFrom:
             - configMapRef:

@@ -1,3 +1,8 @@
+# configures the Istio ingress gateway, 
+# sets up TLS certificates, 
+# defines routing rules for the federator server
+# configures access logging for the Istio service mesh.
+
 apiVersion: networking.istio.io/v1
 kind: Gateway
 metadata:
@@ -16,7 +21,6 @@ spec:
       credentialName: federator-server-mtls
     hosts:
       - "${federator_server_domain}"
-      - "hello-world.${domain}"
       - "${authorisation_api_domain}"
   - port:
       number: 80
@@ -42,6 +46,15 @@ spec:
       credentialName: istio-ingressgateway-cert-data-sharing
     hosts:
       - "${ia_domain}"
+  - port:
+      number: 443
+      name: https-monitoring
+      protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      credentialName: istio-ingressgateway-cert-monitoring
+    hosts:
+      - "monitoring.${domain}"
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
@@ -57,4 +70,15 @@ spec:
     name: letsencrypt-prod
     kind: ClusterIssuer
     group: cert-manager.io
+---
+# access logging
+apiVersion: telemetry.istio.io/v1
+kind: Telemetry
+metadata:
+  name: mesh-default
+  namespace: istio-system
+spec:
+  accessLogging:
+    - providers:
+      - name: envoy
 ---

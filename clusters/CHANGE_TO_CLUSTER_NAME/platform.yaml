@@ -1,20 +1,6 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: redis
-  namespace: flux-system
-spec:
-  interval: 1m
-  timeout: 5m
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  path: ./infrastructure/redis
-  prune: true
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
   name: cert-manager
   namespace: flux-system
 spec:
@@ -54,6 +40,20 @@ spec:
      name: flux-system
    path: ./infrastructure/istio
    prune: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: redis
+  namespace: flux-system
+spec:
+  interval: 1m
+  timeout: 5m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./infrastructure/redis
+  prune: true
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -132,3 +132,16 @@ spec:
    name: flux-system
  path: ./clusters/CHANGE_TO_YOUR_CLUSTER_NAME/workload/federation
  prune: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: authorisation-api
+  namespace: flux-system
+spec:
+  interval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./infrastructure/authorisation-api
+  prune: true
