@@ -5,7 +5,7 @@ metadata:
     app: authorisation-api
     k8s-app: authorisation-api
   name: authorisation-api
-  namespace: tc-federation
+  namespace: tc-system
 spec:
   selector:
     matchLabels:
@@ -23,7 +23,7 @@ spec:
         kubernetes.io/arch: amd64
       containers:
       - name: authorisation-api
-        image: "extacrdsmsbxuksouth001.azurecr.io/authorisation-api:v20250210.5"
+        image: "extacrdsmsbxuksouth001.azurecr.io/authorisation-api:v20250225.4"
         imagePullPolicy: Always
         envFrom:
           - configMapRef:

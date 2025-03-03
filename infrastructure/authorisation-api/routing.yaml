@@ -3,7 +3,7 @@ kind: Service
 
 metadata:
   name: authorisation-api
-  namespace: tc-federation
+  namespace: tc-system
   labels:
     app: authorisation-api-service
 spec:
@@ -20,7 +20,7 @@ kind: VirtualService
 
 metadata:
   name: authorisation
-  namespace: tc-federation
+  namespace: tc-system
 
 spec:
   hosts:
@@ -37,7 +37,7 @@ spec:
           rewrite: /\2
       route:
         - destination:
-            host: authorisation-api.tc-federation.svc.cluster.local
+            host: authorisation-api.tc-system.svc.cluster.local
             port:
               number: 8080
 ---
@@ -45,7 +45,7 @@ apiVersion: networking.istio.io/v1
 kind: DestinationRule
 metadata:
   name: terminate-mtls-authorisation-api
-  namespace: tc-federation
+  namespace: tc-system
 spec:
   workloadSelector:
     matchLabels:
@@ -60,7 +60,7 @@ kind: AuthorizationPolicy
 
 metadata:
   name: allow-ingress-authorisation-api
-  namespace: tc-federation
+  namespace: tc-system
 
 spec:
   selector:
