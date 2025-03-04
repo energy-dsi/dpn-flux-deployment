@@ -34,8 +34,8 @@ data:
   OAUTH2_PROXY_UPSTREAMS: static://200
   # These three should be deployed via a secret for a production environment
   OAUTH2_PROXY_CLIENT_ID: telicent
-  OAUTH2_PROXY_CLIENT_SECRET: HxBl5nFudDd7FhsFzJ3lsPDEFM5v7UCw
-  OAUTH2_PROXY_COOKIE_SECRET: hskznqyznC1mZlae96BUh6bLdVPB6aU1D645sMh9eEE
+  OAUTH2_PROXY_CLIENT_SECRET: "" # Obtained from Keycloak
+  OAUTH2_PROXY_COOKIE_SECRET: "" # Using openssl to generate a random string e.g openssl rand -base64 32 | tr -d '\n' | tr '+/' '-_'
 kind: ConfigMap
 metadata:
   labels:

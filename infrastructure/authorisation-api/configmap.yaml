@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: authorisation-api
-  namespace: tc-federation
+  namespace: tc-system
   labels:
     app: authorisation-api
 data:
