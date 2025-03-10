@@ -54,3 +54,11 @@ After running the bootstrap command, any operation on the cluster (including Flu
   --password=<key-passphrase> \
   --path=clusters/my-cluster
 ```
+
+Once the above command has been executed it will create the sub-directory in `clusters` with the base configuration of `flux-system`
+
+![img.png](img.png)
+
+The above directory is created after the initial bootstrap process has been run. Within the `dpn-flux-repository` you will only need to overwrite the `kustomization.yaml` file.
+
+**DO NOT OVERWRITE `gotk-components.yaml` & `gotk-sync.yaml`**
