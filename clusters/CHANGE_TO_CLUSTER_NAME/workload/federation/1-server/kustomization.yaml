@@ -15,12 +15,12 @@ components:
 configMapGenerator:
   - name: federator-server-properties
     files:
-      - ./patches/config/server.properties
+      - ./server.properties
     behavior: replace
 
 secretGenerator:
   - name: kafka-auth-config
     files:
-      - patches/config/kafka-config.properties
+      - ./kafka-config.properties
     options:
       disableNameSuffixHash: true

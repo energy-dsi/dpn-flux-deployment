@@ -13,4 +13,4 @@
 #
 - op: add
   path: /spec/rules/0/from/0/source/principals/0
-  value: "cluster.local/ns/istio-system/sa/istio-ingress"
+  value: "cluster.local/ns/istio-system/sa/istio-gateway"

@@ -29,14 +29,34 @@ spec:
         namespace: flux-system
       version: "*"
 ---
+# apiVersion: helm.toolkit.fluxcd.io/v2
+# kind: HelmRelease
+# metadata:
+#   name: k6-operator
+#   namespace: flux-system
+# spec:
+#   interval: 1m0s
+#   driftDetection:
+#     mode: warn
+#   targetNamespace: grafana
+#   releaseName: k6-operator
+#   # install:
+#   #   createNamespace: true
+#   chart:
+#     spec:
+#       chart: k6-operator
+#       sourceRef:
+#         kind: HelmRepository
+#         name: grafana
+#         namespace: flux-system
+#       version: "*"
+---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: loki
   namespace: flux-system
 spec:
-  dependsOn:
-    - name: grafana
   interval: 1m0s
   driftDetection:
     mode: warn
@@ -63,8 +83,6 @@ metadata:
   name: alloy
   namespace: flux-system
 spec:
-  dependsOn:
-    - name: loki
   interval: 1m0s
   driftDetection:
     mode: warn

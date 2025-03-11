@@ -13,7 +13,7 @@ apiVersion: v1
 data:
   OAUTH2_PROXY_API_ROUTES: /api/.*$
   OAUTH2_PROXY_APPROVAL_PROMPT: none
-  OAUTH2_PROXY_COOKIE_DOMAIN: ${ia_domain}
+  OAUTH2_PROXY_COOKIE_DOMAIN: ${ia_domain}}
   OAUTH2_PROXY_COOKIE_EXPIRE: 5m
   OAUTH2_PROXY_COOKIE_REFRESH: 4m
   OAUTH2_PROXY_COOKIE_SECURE: "true"
@@ -34,8 +34,8 @@ data:
   OAUTH2_PROXY_UPSTREAMS: static://200
   # These three should be deployed via a secret for a production environment
   OAUTH2_PROXY_CLIENT_ID: telicent
-  OAUTH2_PROXY_CLIENT_SECRET: "" # Obtained from Keycloak
-  OAUTH2_PROXY_COOKIE_SECRET: "" # Using openssl to generate a random string e.g openssl rand -base64 32 | tr -d '\n' | tr '+/' '-_'
+  OAUTH2_PROXY_CLIENT_SECRET: ${oauth2_proxy_client_secret}
+  OAUTH2_PROXY_COOKIE_SECRET: QeO0jgC-xlOGgA-GuOnXA04AgEM5FO-7ikq6RorqRx4= # Replace the "" with a 32 byte secret e.g. openssl rand -base64 32 | tr -d '\n' | tr '+/' '-_'
 kind: ConfigMap
 metadata:
   labels:
@@ -206,6 +206,7 @@ spec:
               - ${ia_domain}
             notHosts:
               - ${keycloak_domain}
+              - ${federator_server_domain}
             notPaths:
               - /realms/*
               - /realms*

@@ -1,5 +1,3 @@
-# sets up the necessary resources for mTLS, including service accounts, roles, role bindings, 
-# and certificates, using Vault as the certificate issuer.
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -56,12 +54,13 @@ spec:
   secretName: federator-server-mtls
   issuerRef:
     name: vault-issuer
-  commonName: "${federator_server_domain}"
+  commonName: ${federator_server_domain}}
   dnsNames:
-  - "${federator_server_domain}"
+  - ${federator_server_domain}
+  - "hello-world.data-sharing.mesh-ai.com"
   - "${authorisation_api_domain}"
   uris:
-  - spiffe://${cluster_name}.${domain}/server
+  - spiffe://${cluster_name}.data-spikes.labs.mesh-ai.com/server
   privateKey:
     algorithm: ECDSA       # Specify ECDSA (Elliptic Curve)
     size: 256              # Common EC key sizes are 256, 384, or 521
