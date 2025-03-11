@@ -9,6 +9,29 @@ To deploy the DPN Flux application, you will need the following tools installed 
 - [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 - [Flux CLI](https://fluxcd.io/flux/installation/)
 
+## Authenticate on AKS Cluster
+
+Once the prerequisites are installed first step is to login into the Azure AKS cluster in order to run the Flux bootstrap process.
+
+### Step 1 - Login to Azure using Azure CLI
+
+In your terminal log into your Azure tenant 
+``` bash
+az login --tenant 00000000-0000-0000-0000-000000000000
+#Set a subscription to be the current active subscription
+az account set -s #Name of Azure Subscription
+```
+
+### Step 2 - Authenticate to AKS Cluster
+In your terminal
+`az aks get-credentials --resource-group AKS_RESOURCE_GROUP --name NAME_OF_CLUSTER`
+
+### Step 3 - Test connection to the AKS cluster
+In your terminal
+Run `kubectl get pods -A` Follow the on-screen instructions.
+
+Once you have successfully received a response from all the pods in the cluster, you can confirm that you have successfully authenticated to it.
+
 ## Flux Bootstrap
 Install the Flux controllers
 The recommended way of installing Flux on Kubernetes clusters is by using the bootstrap procedure.
@@ -31,3 +54,11 @@ After running the bootstrap command, any operation on the cluster (including Flu
   --password=<key-passphrase> \
   --path=clusters/my-cluster
 ```
+
+Once the above command has been executed it will create the sub-directory in `clusters` with the base configuration of `flux-system`
+
+![img.png](img.png)
+
+The above directory is created after the initial bootstrap process has been run. Within the `dpn-flux-repository` you will only need to overwrite the `kustomization.yaml` file.
+
+**DO NOT OVERWRITE `gotk-components.yaml` & `gotk-sync.yaml`**
