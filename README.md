@@ -63,6 +63,8 @@ The above directory is created after the initial bootstrap process has been run.
 
 **DO NOT OVERWRITE `gotk-components.yaml` & `gotk-sync.yaml`**
 
+---
+
 ## Setup DPN
 
 ### Step 1
@@ -73,13 +75,13 @@ On the newly created flux repository checkout a new branch
 ### Step 2
 Copy the following directories from `dpn-flux-deployment`
 
-| Source                                                         | Destination                                                |
-|:---------------------------------------------------------------|:-----------------------------------------------------------|
-| `dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/configs`  | `YOUR_REPOSITORY_NAME/clusters/YOUR_CLUSTER_NAME/configs`  |
-| `dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/workload` | `YOUR_REPOSITORY_NAME/clusters/YOUR_CLUSTER_NAME/workload` |
-| `dpn-flux-deployment/infrastructure`                           | `YOUR_REPOSITORY_NAME\`                                    |
-| `dpn-flux-deployment/telicent`                                 | `YOUR_REPOSITORY_NAME\`                                    |
-| `dpn-flux-deployment/.pre-commit-config.yaml`                  | `YOUR_REPOSITORY_NAME\`                                    |
+|    | Source                                                         | Destination                                                |
+|----|:---------------------------------------------------------------|:-----------------------------------------------------------|
+| 1. | `dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/configs`  | `YOUR_REPOSITORY_NAME/clusters/YOUR_CLUSTER_NAME/configs`  |
+| 2. | `dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/workload` | `YOUR_REPOSITORY_NAME/clusters/YOUR_CLUSTER_NAME/workload` |
+| 3. | `dpn-flux-deployment/infrastructure`                           | `YOUR_REPOSITORY_NAME\`                                    |
+| 4. | `dpn-flux-deployment/telicent`                                 | `YOUR_REPOSITORY_NAME\`                                    |
+| 5. | `dpn-flux-deployment/.pre-commit-config.yaml`                  | `YOUR_REPOSITORY_NAME\`                                    |
 
 ### Step 3
 
@@ -99,4 +101,12 @@ Once you have obtained create a public DNS entry for the DPN software and Keyclo
 ### Step 4
 #### Setup Keycloak
 Follow the guide [keycloak-setup](keycloak_instructions/Keycloak%20Setup%20Instructions.pdf)
+
+
+### Step 5
+
+#### Setup dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/configs
+
+Within the kustomization.yaml file, you will need to update the following values:
+
 

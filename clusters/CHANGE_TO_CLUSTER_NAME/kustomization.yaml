@@ -30,5 +30,4 @@ patches:
             oauth2_proxy_client_secret: 
             vault_url: "https://ca.dsm.neso.energy"
     target:
-    target:
       kind: Kustomization
