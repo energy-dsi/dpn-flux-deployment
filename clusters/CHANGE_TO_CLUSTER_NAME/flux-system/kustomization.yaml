@@ -21,3 +21,29 @@ patches:
             env: 
     target:
       kind: Kustomization
+  - patch: |
+        apiVersion: v1
+        kind: ServiceAccount
+        metadata:
+          name: controller
+          annotations:
+            azure.workload.identity/client-id: 
+            azure.workload.identity/tenant-id:
+    target:
+        kind: ServiceAccount
+        name: "(source-controller|image-reflector-controller)"
+  - patch: |
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: controller
+        labels:
+          azure.workload.identity/use: "true"
+      spec:
+        template:
+          metadata:
+            labels:
+              azure.workload.identity/use: "true"
+    target:
+      kind: Deployment
+      name: "(source-controller|image-reflector-controller)"
