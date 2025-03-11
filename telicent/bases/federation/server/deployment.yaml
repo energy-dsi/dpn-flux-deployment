@@ -30,12 +30,12 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: federator-server
-        app.kubernetes.io/version: "0.15.0"
+        app.kubernetes.io/version: "0.16.0"
     spec:
       serviceAccountName: federator-server
       containers:
         - name: federator-server
-          image: extacrdsmsbxuksouth001.azurecr.io/federation-server:0.15.0
+          image: extacrdsmsbxuksouth001.azurecr.io/federation-server:0.16.0
           imagePullPolicy: Always
           envFrom:
             - configMapRef:
