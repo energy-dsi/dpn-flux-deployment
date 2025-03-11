@@ -54,7 +54,7 @@ spec:
   secretName: federator-server-mtls
   issuerRef:
     name: vault-issuer
-  commonName: ${federator_server_domain}}
+  commonName: ${federator_server_domain}
   dnsNames:
   - ${federator_server_domain}
   - "hello-world.data-sharing.mesh-ai.com"
