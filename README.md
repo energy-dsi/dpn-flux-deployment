@@ -62,3 +62,41 @@ Once the above command has been executed it will create the sub-directory in `cl
 The above directory is created after the initial bootstrap process has been run. Within the `dpn-flux-repository` you will only need to overwrite the `kustomization.yaml` file.
 
 **DO NOT OVERWRITE `gotk-components.yaml` & `gotk-sync.yaml`**
+
+## Setup DPN
+
+### Step 1
+On the newly created flux repository checkout a new branch
+
+###### For all the steps below that involve copying directories from `dpn-flux-deployment`, ensure that the directories are copied to the same corresponding destination path.
+
+### Step 2
+Copy the following directories from `dpn-flux-deployment`
+
+| Source                                                         | Destination                                                |
+|:---------------------------------------------------------------|:-----------------------------------------------------------|
+| `dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/configs`  | `YOUR_REPOSITORY_NAME/clusters/YOUR_CLUSTER_NAME/configs`  |
+| `dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/workload` | `YOUR_REPOSITORY_NAME/clusters/YOUR_CLUSTER_NAME/workload` |
+| `dpn-flux-deployment/infrastructure`                           | `YOUR_REPOSITORY_NAME\`                                    |
+| `dpn-flux-deployment/telicent`                                 | `YOUR_REPOSITORY_NAME\`                                    |
+| `dpn-flux-deployment/.pre-commit-config.yaml`                  | `YOUR_REPOSITORY_NAME\`                                    |
+
+### Step 3
+
+## Obtaining public IP Address (Ingress Gateway)
+To allow incoming connections to the **DPN** and **Keycloak**, you need to obtain the external IP address. Run the following command to retrieve it:
+`kubectl get service -n istio-system`
+
+This command will display the list of services running in the istio-system namespace, including their external IP addresses.
+
+![img_1.png](img_1.png)
+
+Once you have obtained create a public DNS entry for the DPN software and Keycloak providing the External IP of the `istio-gateway` e.g. of DNS
+
+- data-sharing.YOUR_DOMAIN
+- keycloak-data-sharing.YOUR_DOMAIN
+
+### Step 4
+#### Setup Keycloak
+Follow the guide [keycloak-setup](keycloak_instructions/Keycloak%20Setup%20Instructions.pdf)
+
