@@ -15,20 +15,20 @@ patches:
           provider: sops
         postBuild:
           substitute:
-            cert_manager_email: 
-            cluster_endpoint:
-            cluster_env: 
-            cluster_name: 
-            data_producer1_domain: 
-            data_producer2_domain:
-            data_producer3_domain:
-            domain:
-            env: dpn
-            federator_server_domain: 
-            ia_domain: 
-            kafka_brokers_iam:
-            keycloak_domain: 
-            vault_url: "https://ca.dsm.neso.energy"
             authorisation_api_domain:
+            cert_manager_email:
+            cluster_endpoint:
+            cluster_env: aks-mesh-dpn-sbx-uksouth-001
+            cluster_name: aks-mesh-dpn-sbx-uksouth-001
+            data_producer1_domain: 
+            data_producer2_domain: 
+            data_producer3_domain: 
+            domain: 
+            federator_server_domain: 
+            ia_domain:
+            keycloak_domain: 
+            oauth2_proxy_client_secret: 
+            vault_url: "https://ca.dsm.neso.energy"
+    target:
     target:
       kind: Kustomization
