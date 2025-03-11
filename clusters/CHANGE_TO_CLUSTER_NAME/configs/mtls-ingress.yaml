@@ -57,10 +57,9 @@ spec:
   commonName: ${federator_server_domain}
   dnsNames:
   - ${federator_server_domain}
-  - "hello-world.data-sharing.mesh-ai.com"
   - "${authorisation_api_domain}"
   uris:
-  - spiffe://${cluster_name}.data-spikes.labs.mesh-ai.com/server
+    - spiffe://${cluster_name}.${domain}/server
   privateKey:
     algorithm: ECDSA       # Specify ECDSA (Elliptic Curve)
     size: 256              # Common EC key sizes are 256, 384, or 521

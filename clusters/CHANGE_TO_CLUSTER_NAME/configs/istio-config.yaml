@@ -17,7 +17,6 @@ spec:
       credentialName: federator-server-mtls
     hosts:
       - "${federator_server_domain}"
-      - "hello-world.data-sharing.mesh-ai.com"
       - "${authorisation_api_domain}"
   - port:
       number: 80
