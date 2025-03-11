@@ -1,0 +1,21 @@
+# https://cert-manager.io/docs/configuration/vault/#option-1-vault-authentication-method-use-jwtoidc-auth
+
+apiVersion: networking.istio.io/v1
+kind: ServiceEntry
+metadata:
+  name: originate-mtls-federator-client
+  namespace: tc-federation
+spec:
+  hosts:
+  - ${data_producer1_domain}
+  - ${data_producer2_domain}
+  ports:
+  - number: 80
+    name: http-port
+    protocol: HTTP2
+    targetPort: 443
+  - number: 443
+    name: https-port
+    protocol: HTTPS
+  resolution: DNS
+---

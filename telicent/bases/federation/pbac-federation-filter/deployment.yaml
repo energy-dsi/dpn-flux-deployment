@@ -30,13 +30,13 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: pbac-federation-filter
-        app.kubernetes.io/version: "0.8.0"
+        app.kubernetes.io/version: "0.15.0"
     spec:
       serviceAccountName: pbac-federation-filter
       containers:
         - name: pbac-federation-filter
-          image: telicent/telicent-pbac-federation-filter:0.8.0
-          imagePullPolicy: IfNotPresent
+          image: extacrdsmsbxuksouth001.azurecr.io/pbac-filter:0.15.0
+          imagePullPolicy: Always
           envFrom:
             - configMapRef:
                 name: pbac-federation-filter-config

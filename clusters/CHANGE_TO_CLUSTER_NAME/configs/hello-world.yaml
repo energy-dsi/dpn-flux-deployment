@@ -1,0 +1,250 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: hello-world
+  labels:
+    app: hello-world
+    istio-injection: enabled
+---    
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-world
+  namespace: hello-world
+  labels:
+    app: hello-world
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-world
+  template:
+    metadata:
+      labels:
+        app: hello-world
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: hello-world
+          image: nginx:latest
+          # command: [ "/label-studio/deploy/wait-for-postgres.sh", "acid-minimal-cluster", "label-studio" ]
+          ports:
+            - name: http
+              containerPort: 80
+          securityContext:
+            readOnlyRootFilesystem: false
+          resources:
+            limits:
+              cpu: "0.5"
+              memory: "500Mi"
+            requests:
+              cpu: "0.1"
+              memory: "100Mi"
+          volumeMounts:
+          - name: nginx-config-volume
+            mountPath: /etc/nginx/conf.d/default.conf
+            subPath: nginx.conf
+      volumes:
+      - name: nginx-config-volume
+        configMap:
+          name: nginx-config
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+  namespace: hello-world
+data:
+  nginx.conf: |
+    server {
+        listen 80;
+        server_name _;
+
+        location /hello-world {
+            default_type text/html;
+            return 200 '<h1>Hello, World!</h1> <p>http_x_forwarded_for: $http_x_forwarded_for </p> 
+              <h1>http_x_forwarded_client_cert</h1> <p>$http_x_forwarded_client_cert</p>
+              <h1>Request Headers</h1> <p>$http_headers</p>
+              <p>Received header X-Test: $http_x_test</p>';
+            proxy_http_version 1.1; 
+        }
+
+        location / {
+            root /usr/share/nginx/html;
+            index index.html;
+        }
+    }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-world-svc
+  namespace: hello-world
+  annotations:
+spec:
+  ports:
+  - name: http
+    port: 8083
+    targetPort: 80
+  selector:
+    app: hello-world
+  type: ClusterIP
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: hello-world
+  namespace: hello-world
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: vault-issuer
+  namespace: hello-world
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: vault-issuer
+  namespace: hello-world
+spec:
+  vault:
+    server: ${vault_url}
+    path: pki/sign/neso
+    auth:
+      kubernetes:
+        role: ${cluster_name} # this is the auth role created in vault
+        mountPath: /v1/auth/${cluster_name} # this is the path where the auth role is mounted in vault
+        serviceAccountRef:
+          name: vault-issuer
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: vault-issuer
+  namespace: hello-world
+rules:
+  - apiGroups: ['']
+    resources: ['serviceaccounts/token']
+    resourceNames: ['vault-issuer']
+    verbs: ['create']
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: vault-issuer
+  namespace: hello-world
+subjects:
+  - kind: ServiceAccount
+    name: cert-manager
+    namespace: cert-manager
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: vault-issuer
+---
+
+# https://cert-manager.io/docs/configuration/vault/#option-1-vault-authentication-method-use-jwtoidc-auth
+
+#this perms are required to list secrets for mtls
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: hello-world-role
+  namespace: hello-world
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: hello-world-role-binding
+  namespace: hello-world
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: hello-world-role
+subjects:
+  - kind: ServiceAccount
+    name: hello-world
+---
+apiVersion: networking.istio.io/v1
+kind: ServiceEntry
+metadata:
+  name: originate-mtls-for-nginx
+  namespace: hello-world
+spec:
+  hosts:
+  - hello-world.${domain}
+  ports:
+  - number: 80
+    name: http-port
+    protocol: HTTP
+    targetPort: 443
+  - number: 443
+    name: https-port
+    protocol: HTTPS
+  resolution: DNS
+---
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+metadata:
+  name: originate-mtls-hello-world
+  namespace: hello-world
+spec:
+  workloadSelector:
+    matchLabels:
+      app: hello-world
+  host: hello-world.${domain}
+  trafficPolicy:
+    loadBalancer:
+      simple: ROUND_ROBIN
+    portLevelSettings:
+    - port:
+        number: 80
+      tls:
+        mode: MUTUAL
+        credentialName: hello-world-mtls # this must match the secret created earlier to hold client certs, and works only when DR has a workloadSelector
+        sni: hello-world.${domain}
+        # subjectAltNames: # can be enabled if the certificate was generated with SAN as specified in previous section
+        # - ${data_producer1_domain}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: hello-world-mtls
+  namespace: hello-world  # this namespace so that pod can access the secret
+spec:
+  secretName: hello-world-mtls
+  issuerRef:
+    name: vault-issuer
+  commonName: hello-world.${domain}
+  dnsNames:
+  - hello-world.${domain}
+  uris:
+  - spiffe://${ia_domain}/client
+  privateKey:
+    algorithm: ECDSA       # Specify ECDSA (Elliptic Curve)
+    size: 256              # Common EC key sizes are 256, 384, or 521
+---
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: hello-world
+  namespace: hello-world
+spec:
+  hosts:
+  - "hello-world.${domain}"
+  gateways:
+  - istio-system/ingress-gateway
+  http:
+  - match:
+    - uri:
+        prefix: "/hello-world"
+    route:
+    - destination:
+        host: hello-world-svc.hello-world.svc.cluster.local
+        port:
+          number: 8083

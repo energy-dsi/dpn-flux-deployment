@@ -1,5 +1,4 @@
 # https://cert-manager.io/docs/configuration/vault/#option-1-vault-authentication-method-use-jwtoidc-auth
-
 #this perms are required to list secrets for mtls
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
@@ -25,24 +24,6 @@ subjects:
     name: federator-client
 ---
 apiVersion: networking.istio.io/v1
-kind: ServiceEntry
-metadata:
-  name: originate-mtls-federator-client
-  namespace: tc-federation
-spec:
-  hosts:
-  - ${data_producer1_domain}
-  ports:
-  - number: 80
-    name: http-port
-    protocol: HTTP2
-    targetPort: 443
-  - number: 443
-    name: https-port
-    protocol: HTTPS
-  resolution: DNS
----
-apiVersion: networking.istio.io/v1
 kind: DestinationRule
 metadata:
   name: originate-mtls-federator-client
@@ -51,7 +32,7 @@ spec:
   workloadSelector:
     matchLabels:
       app: federator-client
-  host: ${data_producer1_domain}
+  host: ${data_producer2_domain}
   trafficPolicy:
     loadBalancer:
       simple: ROUND_ROBIN
@@ -60,10 +41,10 @@ spec:
         number: 80
       tls:
         mode: MUTUAL
-        credentialName: federator-client-mtls # this must match the secret created earlier to hold client certs, and works only when DR has a workloadSelector
-        sni: ${data_producer1_domain}
+        credentialName: federator-client-mtls-neso-azure # this must match the secret created earlier to hold client certs, and works only when DR has a workloadSelector
+        sni: ${data_producer2_domain}
         # subjectAltNames: # can be enabled if the certificate was generated with SAN as specified in previous section
-        # - ${data_producer1_domain}
+        # - ${data_producer2_domain}
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
@@ -71,12 +52,12 @@ metadata:
   name: federator-client-mtls
   namespace: tc-federation  # this namespace so that pod can access the secret
 spec:
-  secretName: federator-client-mtls
+  secretName: federator-client-mtls-neso-azure
   issuerRef:
     name: vault-issuer
-  commonName: "${data_producer1_domain}"
+  commonName: "${data_producer2_domain}"
   dnsNames:
-  - "${data_producer1_domain}"
+  - "${data_producer2_domain}"
   uris:
   - spiffe://${ia_domain}/client
   privateKey:

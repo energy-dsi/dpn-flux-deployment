@@ -13,7 +13,7 @@ metadata:
   namespace: keycloak
 spec:
   hosts:
-  - "${keycloak_domain}"
+  - ${keycloak_domain}
   gateways:
   - istio-system/ingress-gateway
   http:
@@ -26,7 +26,6 @@ spec:
         port:
           number: 80
 ---
-#prod namespace cert-manager
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
@@ -34,9 +33,9 @@ metadata:
   namespace: istio-system
 spec:
   secretName: istio-ingressgateway-cert-keycloak
-  commonName: "${keycloak_domain}"
+  commonName: ${keycloak_domain}
   dnsNames:
-      - "${keycloak_domain}"
+      - ${keycloak_domain}
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
