@@ -28,6 +28,7 @@ patches:
             ia_domain:
             keycloak_domain: 
             oauth2_proxy_client_secret: 
+            oauth2_proxy_cookie_secret:
             vault_url: "https://ca.dsm.neso.energy"
     target:
       kind: Kustomization
