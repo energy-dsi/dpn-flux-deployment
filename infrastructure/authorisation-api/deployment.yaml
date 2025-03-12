@@ -23,7 +23,7 @@ spec:
         kubernetes.io/arch: amd64
       containers:
       - name: authorisation-api
-        image: "extacrdsmsbxuksouth001.azurecr.io/authorisation-api:v20250225.4"
+        image: "YOUR_ACR_NAME.azurecr.io/authorisation-api:v20250225.4"
         imagePullPolicy: Always
         envFrom:
           - configMapRef:
