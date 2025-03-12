@@ -123,3 +123,28 @@ Within the kustomization.yaml file, you will need to update the following values
 - oauth2_proxy_cookie_secret - Create a 32 byte secret e.g. `openssl rand -base64 32 | tr -d '\n' | tr '+/' '-_'`
 
 
+### Step 6
+
+#### Update the dpn-flux-deployment/workload/
+
+The workload directory contains the DPN configuration files. As part of the deployment process, the Azure Cosmos DB and Event Hubs configuration details are required to populate the necessary configuration files.
+
+
+#### /dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/workload/core/2-access/api/patches/config/api.env
+
+The api.env file populate 
+- Line 1 with the APP Domain e.g. data-sharing.YOUR_DOMAIN. 
+- Line 3 the Cosmos DB Hostname. 
+- Line 4 the Mongo User. 
+- Line 5 the Keycloak Domain e.g. keycloak-data-sharing.YOUR_DOMAIN. 
+- Line 7 the Cosmos Host Name, 
+- Line 8 the Cosmos Port. 
+- Line 9 the Cosmos Query String e.g. `?ssl=true&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@[COSMOS_DB_NAME]@`
+
+#### /dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/workload/core/2-access/ui/patches/config/env-config.js
+- Line 1 with the APP Domain e.g. data-sharing.YOUR_DOMAIN. 
+
+#### /dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/workload/core/3-smart-cache-graph/server/config/config.ttl
+- Line 253 with the Event Hub Name
+- Line 268 with the Event Hub Name
+
