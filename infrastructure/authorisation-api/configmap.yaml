@@ -7,7 +7,7 @@ metadata:
     app: authorisation-api
 data:
   MONGO_PROTOCOL: 'mongodb'
-  MONGO_USER: 'cosmos-mesh-dpn-sbx-uksouth-001'
-  MONGO_HOST: 'cosmos-mesh-dpn-sbx-uksouth-001.mongo.cosmos.azure.com'
+  MONGO_USER: ''
+  MONGO_HOST: ''
   MONGO_PORT: '10255'
-  MONGO_QUERY_STRING: '?ssl=true&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@cosmos-mesh-dpn-sbx-uksouth-001@'
+  MONGO_QUERY_STRING: '?ssl=true&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@YOUR_COSMOS_DB_NAME@'

@@ -108,5 +108,18 @@ Follow the guide [keycloak-setup](keycloak_instructions/Keycloak%20Setup%20Instr
 #### Setup dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/configs
 
 Within the kustomization.yaml file, you will need to update the following values:
+- authorisation_api_domain - e.g authorisation-data-sharing.YOUR_DOMAIN
+- cert_manager_email - your email address
+- cluster_env - AKS cluster name 
+- cluster_name - AKS cluster name
+- data_producer1_domain - network participant domain name
+- data_producer2_domain - network participant domain name
+- data_producer3_domain - network participant domain name
+- domain - your domain name e.g data-sharing.YOUR_DOMAIN
+- federator_server_domain - e.g federator-data-sharing.YOUR_DOMAIN
+- ia_domain - e.g e.g data-sharing.YOUR_DOMAIN
+- keycloak_domain - e.g keycloak-data-sharing.YOUR_DOMAIN
+- oauth2_proxy_client_secret - oauth2_proxy_client_secret from Keycloak
+- oauth2_proxy_cookie_secret - Create a 32 byte secret e.g. `openssl rand -base64 32 | tr -d '\n' | tr '+/' '-_'`
 
 

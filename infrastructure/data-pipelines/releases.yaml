@@ -10,7 +10,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1h0m0s
-  url: oci://acrmeshdpnsbxuksouth001.azurecr.io
+  url: oci://YOUR_ACR_NAME.azurecr.io
   type: oci
   provider: azure
 ---
@@ -38,8 +38,8 @@ spec:
         namespace: flux-system
       version: "*"
   values:
-    image_semver: v98
-    image_name: acrmeshdpnsbxuksouth001.azurecr.io/dsi/adaptor-eq
+    image_semver: YOUR_IMAGE_SEMVER
+    image_name: YOUR_ACR_NAME.azurecr.io/dsi/adaptor-eq
 ---
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
@@ -48,7 +48,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1h0m0s
-  url: oci://acrmeshdpnsbxuksouth001.azurecr.io
+  url: oci://YOUR_ACR_NAME.azurecr.io
   type: oci
   provider: azure
 ---
@@ -76,8 +76,8 @@ spec:
         namespace: flux-system
       version: "*"
   values:
-    image_semver: v98
-    image_name: acrmeshdpnsbxuksouth001.azurecr.io/dsi/adaptor-eqbd
+    image_semver: YOUR_IMAGE_SEMVER
+    image_name: YOUR_ACR_NAME.azurecr.io/dsi/adaptor-eqbd
 ---
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
@@ -86,7 +86,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1h0m0s
-  url: oci://acrmeshdpnsbxuksouth001.azurecr.io
+  url: oci://YOUR_ACR_NAME.azurecr.io
   type: oci
   provider: azure
 ---
@@ -114,8 +114,8 @@ spec:
         namespace: flux-system
       version: "*"
   values:
-    image_semver: v98
-    image_name: acrmeshdpnsbxuksouth001.azurecr.io/dsi/adaptor-ssh
+    image_semver: YOUR_IMAGE_SEMVER
+    image_name: YOUR_ACR_NAME.azurecr.io/dsi/adaptor-ssh
 ---
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
@@ -124,7 +124,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1h0m0s
-  url: oci://acrmeshdpnsbxuksouth001.azurecr.io
+  url: oci://YOUR_ACR_NAME.azurecr.io
   type: oci
   provider: azure
 ---
@@ -152,8 +152,8 @@ spec:
         namespace: flux-system
       version: "*"
   values:
-    image_semver: v98
-    image_name: acrmeshdpnsbxuksouth001.azurecr.io/dsi/adaptor-dl
+    image_semver: YOUR_IMAGE_SEMVER
+    image_name: YOUR_ACR_NAME.azurecr.io/dsi/adaptor-dl
 ---
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
@@ -162,7 +162,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1h0m0s
-  url: oci://acrmeshdpnsbxuksouth001.azurecr.io
+  url: oci://YOUR_ACR_NAME.azurecr.io
   type: oci
   provider: azure
 ---
@@ -190,8 +190,8 @@ spec:
         namespace: flux-system
       version: "*"
   values:
-    image_semver: v98
-    image_name: acrmeshdpnsbxuksouth001.azurecr.io/dsi/adaptor-load
+    image_semver: YOUR_IMAGE_SEMVER
+    image_name: YOUR_ACR_NAME.azurecr.io/dsi/adaptor-load
 ---
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
@@ -200,7 +200,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1h0m0s
-  url: oci://acrmeshdpnsbxuksouth001.azurecr.io
+  url: oci://YOUR_ACR_NAME.azurecr.io
   type: oci
   provider: azure
 ---
@@ -228,8 +228,8 @@ spec:
         namespace: flux-system
       version: "*"
   values:
-    image_semver: v137
-    image_name: acrmeshdpnsbxuksouth001.azurecr.io/dsi/mapper-schema-assurance-eq
+    image_semver: YOUR_IMAGE_SEMVER
+    image_name: YOUR_ACR_NAME.azurecr.io/dsi/mapper-schema-assurance-eq
 ---
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
@@ -238,7 +238,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1h0m0s
-  url: oci://acrmeshdpnsbxuksouth001.azurecr.io
+  url: oci://YOUR_ACR_NAME.azurecr.io
   type: oci
   provider: azure
 ---
@@ -266,8 +266,8 @@ spec:
         namespace: flux-system
       version: "*"
   values:
-    image_semver: v137
-    image_name: acrmeshdpnsbxuksouth001.azurecr.io/dsi/mapper-schema-assurance-eqbd
+    image_semver: YOUR_IMAGE_SEMVER
+    image_name: YOUR_ACR_NAME.azurecr.io/dsi/mapper-schema-assurance-eqbd
 ---
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
@@ -276,7 +276,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1h0m0s
-  url: oci://acrmeshdpnsbxuksouth001.azurecr.io
+  url: oci://YOUR_ACR_NAME.azurecr.io
   type: oci
   provider: azure
 ---
@@ -304,8 +304,8 @@ spec:
         namespace: flux-system
       version: "*"
   values:
-    image_semver: v137
-    image_name: acrmeshdpnsbxuksouth001.azurecr.io/dsi/mapper-schema-assurance-dl
+    image_semver: YOUR_IMAGE_SEMVER
+    image_name: YOUR_ACR_NAME.azurecr.io/dsi/mapper-schema-assurance-dl
 ---
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
@@ -314,7 +314,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1h0m0s
-  url: oci://acrmeshdpnsbxuksouth001.azurecr.io
+  url: oci://YOUR_ACR_NAME.azurecr.io
   type: oci
   provider: azure
 ---
@@ -342,8 +342,8 @@ spec:
         namespace: flux-system
       version: "*"
   values:
-    image_semver: v137
-    image_name: acrmeshdpnsbxuksouth001.azurecr.io/dsi/mapper-schema-assurance-ssh
+    image_semver: YOUR_IMAGE_SEMVER
+    image_name: YOUR_ACR_NAME.azurecr.io/dsi/mapper-schema-assurance-ssh
 ---
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
@@ -352,7 +352,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1h0m0s
-  url: oci://acrmeshdpnsbxuksouth001.azurecr.io
+  url: oci://YOUR_ACR_NAME.azurecr.io
   type: oci
   provider: azure
 ---
@@ -380,8 +380,8 @@ spec:
         namespace: flux-system
       version: "*"
   values:
-    image_semver: v137
-    image_name: acrmeshdpnsbxuksouth001.azurecr.io/dsi/mapper-schema-assurance-load
+    image_semver: YOUR_IMAGE_SEMVER
+    image_name: YOUR_ACR_NAME.azurecr.io/dsi/mapper-schema-assurance-load
 ---
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
@@ -390,7 +390,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1h0m0s
-  url: oci://acrmeshdpnsbxuksouth001.azurecr.io
+  url: oci://YOUR_ACR_NAME.azurecr.io
   type: oci
   provider: azure
 ---
@@ -418,8 +418,8 @@ spec:
         namespace: flux-system
       version: "*"
   values:
-    image_semver: v53
-    image_name: acrmeshdpnsbxuksouth001.azurecr.io/dsi/mapper-security-labels-eq
+    image_semver: YOUR_IMAGE_SEMVER
+    image_name: YOUR_ACR_NAME.azurecr.io/dsi/mapper-security-labels-eq
 ---
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
@@ -428,7 +428,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1h0m0s
-  url: oci://acrmeshdpnsbxuksouth001.azurecr.io
+  url: oci://YOUR_ACR_NAME.azurecr.io
   type: oci
   provider: azure
 ---
@@ -456,8 +456,8 @@ spec:
         namespace: flux-system
       version: "*"
   values:
-    image_semver: v53
-    image_name: acrmeshdpnsbxuksouth001.azurecr.io/dsi/mapper-security-labels-ssh
+    image_semver: YOUR_IMAGE_SEMVER
+    image_name: YOUR_ACR_NAME.azurecr.io/dsi/mapper-security-labels-ssh
 ---
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
@@ -466,7 +466,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1h0m0s
-  url: oci://acrmeshdpnsbxuksouth001.azurecr.io
+  url: oci://YOUR_ACR_NAME.azurecr.io
   type: oci
   provider: azure
 ---
@@ -494,8 +494,8 @@ spec:
         namespace: flux-system
       version: "*"
   values:
-    image_semver: v53
-    image_name: acrmeshdpnsbxuksouth001.azurecr.io/dsi/mapper-security-labels-eqbd
+    image_semver: YOUR_IMAGE_SEMVER
+    image_name: YOUR_ACR_NAME.azurecr.io/dsi/mapper-security-labels-eqbd
 ---
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
@@ -504,7 +504,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1h0m0s
-  url: oci://acrmeshdpnsbxuksouth001.azurecr.io
+  url: oci://YOUR_ACR_NAME.azurecr.io
   type: oci
   provider: azure
 ---
@@ -532,8 +532,8 @@ spec:
         namespace: flux-system
       version: "*"
   values:
-    image_semver: v53
-    image_name: acrmeshdpnsbxuksouth001.azurecr.io/dsi/mapper-security-labels-dl
+    image_semver: YOUR_IMAGE_SEMVER
+    image_name: YOUR_ACR_NAME.azurecr.io/dsi/mapper-security-labels-dl
 ---
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
@@ -542,7 +542,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1h0m0s
-  url: oci://acrmeshdpnsbxuksouth001.azurecr.io
+  url: oci://YOUR_ACR_NAME.azurecr.io
   type: oci
   provider: azure
 ---
@@ -570,8 +570,8 @@ spec:
         namespace: flux-system
       version: "*"
   values:
-    image_semver: v53
-    image_name: acrmeshdpnsbxuksouth001.azurecr.io/dsi/mapper-security-labels-load
+    image_semver: YOUR_IMAGE_SEMVER
+    image_name: YOUR_ACR_NAME.azurecr.io/dsi/mapper-security-labels-load
 ---
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
@@ -580,7 +580,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1h0m0s
-  url: oci://acrmeshdpnsbxuksouth001.azurecr.io
+  url: oci://YOUR_ACR_NAME.azurecr.io
   type: oci
   provider: azure
 ---
@@ -608,8 +608,8 @@ spec:
         namespace: flux-system
       version: "*"
   values:
-    image_semver: v42
-    image_name: acrmeshdpnsbxuksouth001.azurecr.io/dsi/mapper-extractor-eq
+    image_semver: YOUR_IMAGE_SEMVER
+    image_name: YOUR_ACR_NAME.azurecr.io/dsi/mapper-extractor-eq
 ---
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
@@ -618,7 +618,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1h0m0s
-  url: oci://acrmeshdpnsbxuksouth001.azurecr.io
+  url: oci://YOUR_ACR_NAME.azurecr.io
   type: oci
   provider: azure
 ---
@@ -646,8 +646,8 @@ spec:
         namespace: flux-system
       version: "*"
   values:
-    image_semver: v42
-    image_name: acrmeshdpnsbxuksouth001.azurecr.io/dsi/mapper-extractor-eqbd
+    image_semver: YOUR_IMAGE_SEMVER
+    image_name: YOUR_ACR_NAME.azurecr.io/dsi/mapper-extractor-eqbd
 ---
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
@@ -656,7 +656,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1h0m0s
-  url: oci://acrmeshdpnsbxuksouth001.azurecr.io
+  url: oci://YOUR_ACR_NAME.azurecr.io
   type: oci
   provider: azure
 ---
@@ -684,8 +684,8 @@ spec:
         namespace: flux-system
       version: "*"
   values:
-    image_semver: v42
-    image_name: acrmeshdpnsbxuksouth001.azurecr.io/dsi/mapper-extractor-ssh
+    image_semver: YOUR_IMAGE_SEMVER
+    image_name: YOUR_ACR_NAME.azurecr.io/dsi/mapper-extractor-ssh
 ---
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
@@ -694,7 +694,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1h0m0s
-  url: oci://acrmeshdpnsbxuksouth001.azurecr.io
+  url: oci://YOUR_ACR_NAME.azurecr.io
   type: oci
   provider: azure
 ---
@@ -722,8 +722,8 @@ spec:
         namespace: flux-system
       version: "*"
   values:
-    image_semver: v42
-    image_name: acrmeshdpnsbxuksouth001.azurecr.io/dsi/mapper-extractor-dl
+    image_semver: YOUR_IMAGE_SEMVER
+    image_name: YOUR_ACR_NAME.azurecr.io/dsi/mapper-extractor-dl
 
 ---
 apiVersion: source.toolkit.fluxcd.io/v1
@@ -733,7 +733,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1h0m0s
-  url: oci://acrmeshdpnsbxuksouth001.azurecr.io
+  url: oci://YOUR_ACR_NAME.azurecr.io
   type: oci
   provider: azure
 ---
@@ -761,6 +761,6 @@ spec:
         namespace: flux-system
       version: "*"
   values:
-    image_semver: v42
-    image_name: acrmeshdpnsbxuksouth001.azurecr.io/dsi/mapper-extractor-load
+    image_semver: YOUR_IMAGE_SEMVER
+    image_name: YOUR_ACR_NAME.azurecr.io/dsi/mapper-extractor-load
 
