@@ -150,3 +150,13 @@ The api.env file populate
 
 #### /dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/workload/core/4-query/ui/patches/config/env-config.js
 - Line 1, 3, 4 replace `change.me.to.the.apps.host` with the APP Domain e.g. data-sharing.YOUR_DOMAIN.
+
+#### /dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/workload/federation/1-server/kafka-config.properties
+- Line 10 add the Event Hub Connection String within `password=""`
+
+#### /dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/workload/federation/1-server/server.properties
+- Line 1 add the EventHub FQDN e.g. `eventhub-data-sharing.servicebus.windows.net:9093`
+
+#### /dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/workload/federation/3-outgoing-filter/patches/config/config.env
+- Line 3 add the EventHub FQDN e.g. `eventhub-data-sharing.servicebus.windows.net:9093`
+
