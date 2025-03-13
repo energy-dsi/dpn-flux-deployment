@@ -105,7 +105,7 @@ Once you have obtained create a public DNS entry for the DPN software and Keyclo
 
 ### Step 4
 #### Setup Keycloak
-Follow the guide [keycloak-setup](keycloak_instructions/Keycloak%20Setup%20Instructions.pdf)
+Follow the [keycloak-setup](keycloak_instructions/Keycloak%20Setup%20Instructions.pdf) guide
 
 
 ### Step 5
