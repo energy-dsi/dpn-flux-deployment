@@ -160,3 +160,17 @@ The api.env file populate
 #### /dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/workload/federation/3-outgoing-filter/patches/config/config.env
 - Line 3 add the EventHub FQDN e.g. `eventhub-data-sharing.servicebus.windows.net:9093`
 
+#### /dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/workload/federation/clients/
+
+Within the clients directory will be specific network partner configuration setup. Recommendation to rename the directory to the network partner name.
+
+The incoming filter directory needs to match the network partner name.
+
+The changes required in the client directory are as follows:
+- client.properties - Line 3 add the EventHub FQDN e.g. `eventhub-data-sharing.servicebus.windows.net:9093`
+- kafka-config.properties - Line 10 add the Event Hub Connection String within `password=""`
+
+Within the incoming filter directory the changes required are as follows:
+- config.env
+  - Line 3 add the EventHub FQDN e.g. `eventhub-data-sharing.servicebus.windows.net:9093`
+  - Line 6, 7, 8 change the `client` placeholder to the network partner name
