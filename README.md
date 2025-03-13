@@ -148,3 +148,5 @@ The api.env file populate
 - Line 253 with the Event Hub Name
 - Line 268 with the Event Hub Name
 
+#### /dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/workload/core/4-query/ui/patches/config/env-config.js
+- Line 1, 3, 4 replace `change.me.to.the.apps.host` with the APP Domain e.g. data-sharing.YOUR_DOMAIN.
