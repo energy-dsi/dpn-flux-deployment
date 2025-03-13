@@ -130,7 +130,7 @@ Within the kustomization.yaml file, you will need to update the following values
 The workload directory contains the DPN configuration files. As part of the deployment process, the Azure Cosmos DB and Event Hubs configuration details are required to populate the necessary configuration files.
 
 
-#### /dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/workload/core/2-access/api/patches/config/api.env
+#### Update /dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/workload/core/2-access/api/patches/config/api.env
 
 The api.env file populate 
 - Line 1 with the APP Domain e.g. data-sharing.YOUR_DOMAIN. 
@@ -141,26 +141,26 @@ The api.env file populate
 - Line 8 the Cosmos Port. 
 - Line 9 the Cosmos Query String e.g. `?ssl=true&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@[COSMOS_DB_NAME]@`
 
-#### /dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/workload/core/2-access/ui/patches/config/env-config.js
+#### Update /dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/workload/core/2-access/ui/patches/config/env-config.js
 - Line 1 with the APP Domain e.g. data-sharing.YOUR_DOMAIN. 
 
-#### /dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/workload/core/3-smart-cache-graph/server/config/config.ttl
+#### Update /dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/workload/core/3-smart-cache-graph/server/config/config.ttl
 - Line 253 with the Event Hub Name
 - Line 268 with the Event Hub Name
 
-#### /dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/workload/core/4-query/ui/patches/config/env-config.js
+#### Update /dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/workload/core/4-query/ui/patches/config/env-config.js
 - Line 1, 3, 4 replace `change.me.to.the.apps.host` with the APP Domain e.g. data-sharing.YOUR_DOMAIN.
 
-#### /dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/workload/federation/1-server/kafka-config.properties
+#### Update /dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/workload/federation/1-server/kafka-config.properties
 - Line 10 add the Event Hub Connection String within `password=""`
 
-#### /dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/workload/federation/1-server/server.properties
+#### Update /dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/workload/federation/1-server/server.properties
 - Line 1 add the EventHub FQDN e.g. `eventhub-data-sharing.servicebus.windows.net:9093`
 
-#### /dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/workload/federation/3-outgoing-filter/patches/config/config.env
+#### Update /dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/workload/federation/3-outgoing-filter/patches/config/config.env
 - Line 3 add the EventHub FQDN e.g. `eventhub-data-sharing.servicebus.windows.net:9093`
 
-#### /dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/workload/federation/clients/
+#### Update /dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/workload/federation/clients/
 
 Within the clients directory will be specific network partner configuration setup. Recommendation to rename the directory to the network partner name.
 
@@ -185,3 +185,6 @@ Within the incoming filter directory the changes required are as follows:
 - Line 12 the Cosmos DB Port
 - Line 13 replace `YOUR_COSMOS_DB_NAME` with the Cosmos DB Name
 
+#### Update the dpn-flux-deployment/infrastructure/data-pipelines/releases.yaml
+- Find and replace `YOUR_ACR_NAME` with the Azure Container Registry Name
+- FInd and replace `YOUR_IMAGE_SEMVER` with the version number within your Container Registry
