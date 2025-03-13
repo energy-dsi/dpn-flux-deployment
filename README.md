@@ -174,3 +174,10 @@ Within the incoming filter directory the changes required are as follows:
 - config.env
   - Line 3 add the EventHub FQDN e.g. `eventhub-data-sharing.servicebus.windows.net:9093`
   - Line 6, 7, 8 change the `client-*` placeholder to the network partner name
+
+  ---
+
+### Step 7
+
+#### Update the dpn-flux-deployment/infrastructure/
+
