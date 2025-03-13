@@ -8,6 +8,7 @@ To deploy the DPN Flux application, you will need the following tools installed 
 - [Helm](https://helm.sh/)
 - [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 - [Flux CLI](https://fluxcd.io/flux/installation/)
+- [K9s](https://k9scli.io/topics/install/) - Helps to manage the Kubernetes cluster
 
 ## Authenticate on AKS Cluster
 
