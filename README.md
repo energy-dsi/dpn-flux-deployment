@@ -83,7 +83,7 @@ Copy the following directories from `dpn-flux-deployment`
 | 3. | `dpn-flux-deployment/infrastructure`                           | `YOUR_REPOSITORY_NAME/`                                    |
 | 4. | `dpn-flux-deployment/telicent`                                 | `YOUR_REPOSITORY_NAME/`                                    |
 | 5. | `dpn-flux-deployment/.pre-commit-config.yaml`                  | `YOUR_REPOSITORY_NAME/`                                    |
-| 6. | `dpn-flux-deployment/flux-system/kustomization.yaml`           | Copy the contents of `dpn-flux-deployment/flux-system/kustomization.yaml` to `YOUR_REPOSITORY_NAME/flux-system/kustomization.yaml`                                    |
+| 6. | `dpn-flux-deployment/flux-system/kustomization.yaml`           | Replace the contents of `dpn-flux-deployment/flux-system/kustomization.yaml` to `YOUR_REPOSITORY_NAME/flux-system/kustomization.yaml`                                    |
 
 ### Step 3
 
