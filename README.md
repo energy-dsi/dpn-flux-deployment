@@ -47,7 +47,7 @@ After running the bootstrap command, any operation on the cluster (including Flu
 
 #### To bootstrap Flux, the person running the command must have cluster admin rights for the target Kubernetes cluster. It is also required that the person running the command to be the owner of the GitHub repository, or to have admin rights of a GitHub organisation.
 
-```
+``` bash
   flux bootstrap git \
   --url=ssh://git@github.com/<org>/<repository> \
   --branch=<my-branch> \
