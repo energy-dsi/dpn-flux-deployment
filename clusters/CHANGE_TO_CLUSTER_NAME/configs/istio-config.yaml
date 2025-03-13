@@ -82,7 +82,7 @@ spec:
   gateways:
   - istio-system/ingress-gateway
   hosts:
-  - server1.data-sharing.mesh-ai.com
+  - "${federator_server_domain}"
   http:
   - match:
     - uri:
