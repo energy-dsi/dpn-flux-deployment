@@ -15,7 +15,7 @@ patches:
           provider: sops
         postBuild:
           substitute:
-            luster_env: 
+            cluster_env: 
             cluster_name: 
             domain:
             env: 

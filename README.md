@@ -83,6 +83,7 @@ Copy the following directories from `dpn-flux-deployment`
 | 3. | `dpn-flux-deployment/infrastructure`                           | `YOUR_REPOSITORY_NAME/`                                    |
 | 4. | `dpn-flux-deployment/telicent`                                 | `YOUR_REPOSITORY_NAME/`                                    |
 | 5. | `dpn-flux-deployment/.pre-commit-config.yaml`                  | `YOUR_REPOSITORY_NAME/`                                    |
+| 6. | `dpn-flux-deployment/flux-system/kustomization.yaml`           | Copy the contents of `dpn-flux-deployment/flux-system/kustomization.yaml` to `YOUR_REPOSITORY_NAME/flux-system/kustomization.yaml`                                    |
 
 ### Step 3
 
@@ -124,7 +125,13 @@ Within the kustomization.yaml file, you will need to update the following values
 - oauth2_proxy_client_secret - oauth2_proxy_client_secret from Keycloak
 - oauth2_proxy_cookie_secret - Create a 32 byte secret e.g. `openssl rand -base64 32 | tr -d '\n' | tr '+/' '-_'`
 
-
+#### Update the dpn-flux-deployment/flux-system/kustomization.yaml
+- Line 18 with the AKS cluster name
+- Line 19 with the AKS cluster name
+- Line 20 with the domain name e.g data-sharing.YOUR_DOMAIN
+- Line 21 environment eg `dpn`
+- Line 30 with the helm managed identity the client id
+- Line 31 with the Azure Tenant ID
 ### Step 6
 
 #### Update the dpn-flux-deployment/workload/
