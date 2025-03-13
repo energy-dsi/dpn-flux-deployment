@@ -83,7 +83,9 @@ Copy the following directories from `dpn-flux-deployment`
 | 3. | `dpn-flux-deployment/infrastructure`                           | `YOUR_REPOSITORY_NAME/`                                    |
 | 4. | `dpn-flux-deployment/telicent`                                 | `YOUR_REPOSITORY_NAME/`                                    |
 | 5. | `dpn-flux-deployment/.pre-commit-config.yaml`                  | `YOUR_REPOSITORY_NAME/`                                    |
-| 6. | `dpn-flux-deployment/flux-system/kustomization.yaml`           | Replace the contents of `dpn-flux-deployment/flux-system/kustomization.yaml` to `YOUR_REPOSITORY_NAME/flux-system/kustomization.yaml`                                    |
+| 6. | `dpn-flux-deployment/flux-system/kustomization.yaml`           | Replace the contents of `dpn-flux-deployment/flux-system/kustomization.yaml` to `YOUR_REPOSITORY_NAME/flux-system/kustomization.yaml`|
+| 7. | `dpn-flux-deployment/kustomization.yaml`                       | `YOUR_REPOSITORY_NAME/kustomization.yaml`|
+| 8. | `dpn-flux-deployment/platform.yaml`                            | `YOUR_REPOSITORY_NAME/platform.yaml`|
 
 ### Step 3
 
@@ -108,7 +110,7 @@ Follow the guide [keycloak-setup](keycloak_instructions/Keycloak%20Setup%20Instr
 
 ### Step 5
 
-#### Setup dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/configs
+#### Setup dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/kustomization.yaml
 
 Within the kustomization.yaml file, you will need to update the following values:
 - authorisation_api_domain - e.g authorisation-data-sharing.YOUR_DOMAIN
@@ -125,6 +127,9 @@ Within the kustomization.yaml file, you will need to update the following values
 - oauth2_proxy_client_secret - oauth2_proxy_client_secret from Keycloak
 - oauth2_proxy_cookie_secret - Create a 32 byte secret e.g. `openssl rand -base64 32 | tr -d '\n' | tr '+/' '-_'`
 
+#### Update the dpn-flux-deployment/platform.yaml
+- Find and replace `CHANGE_TO_CLUSTER_NAME` with the Cluster Directory Name
+  
 #### Update the dpn-flux-deployment/flux-system/kustomization.yaml
 - Line 18 with the AKS cluster name
 - Line 19 with the AKS cluster name
