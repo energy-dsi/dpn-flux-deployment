@@ -80,9 +80,9 @@ Copy the following directories from `dpn-flux-deployment`
 |----|:---------------------------------------------------------------|:-----------------------------------------------------------|
 | 1. | `dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/configs`  | `YOUR_REPOSITORY_NAME/clusters/YOUR_CLUSTER_NAME/configs`  |
 | 2. | `dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/workload` | `YOUR_REPOSITORY_NAME/clusters/YOUR_CLUSTER_NAME/workload` |
-| 3. | `dpn-flux-deployment/infrastructure`                           | `YOUR_REPOSITORY_NAME\`                                    |
-| 4. | `dpn-flux-deployment/telicent`                                 | `YOUR_REPOSITORY_NAME\`                                    |
-| 5. | `dpn-flux-deployment/.pre-commit-config.yaml`                  | `YOUR_REPOSITORY_NAME\`                                    |
+| 3. | `dpn-flux-deployment/infrastructure`                           | `YOUR_REPOSITORY_NAME/`                                    |
+| 4. | `dpn-flux-deployment/telicent`                                 | `YOUR_REPOSITORY_NAME/`                                    |
+| 5. | `dpn-flux-deployment/.pre-commit-config.yaml`                  | `YOUR_REPOSITORY_NAME/`                                    |
 
 ### Step 3
 
@@ -94,10 +94,11 @@ This command will display the list of services running in the istio-system names
 
 ![img_1.png](img_1.png)
 
-Once you have obtained create a public DNS entry for the DPN software and Keycloak providing the External IP of the `istio-gateway` e.g. of DNS
+Once you have obtained create a public DNS entry for the DPN software and Keycloak providing the External IP of the `istio-gateway` e.g. of DNS 
 
 - data-sharing.YOUR_DOMAIN
 - keycloak-data-sharing.YOUR_DOMAIN
+- authorisation-data-sharing.YOUR_DOMAIN
 
 ### Step 4
 #### Setup Keycloak
