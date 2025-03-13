@@ -53,7 +53,7 @@ After running the bootstrap command, any operation on the cluster (including Flu
   --branch=<my-branch> \
   --private-key-file=<path/to/ssh/private.key> \
   --password=<key-passphrase> \
-  --path=clusters/my-cluster
+  --path=clusters/my-cluster #CHANGE_TO_CLUSTER_NAME
 ```
 
 Once the above command has been executed it will create the sub-directory in `clusters` with the base configuration of `flux-system`
