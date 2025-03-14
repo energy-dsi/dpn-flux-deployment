@@ -58,7 +58,6 @@ More information on the Flux bootstrap process can be found [here](https://fluxc
   --url=ssh://git@github.com/<org>/<repository> \
   --branch=<my-branch> \
   --private-key-file=<path/to/ssh/private.key> \
-  --password=<key-passphrase> \
   --path=clusters/my-cluster #CHANGE_TO_CLUSTER_NAME
 ```
 
