@@ -1,3 +1,6 @@
+# Disclaimer
+The software included in this repository is intended for pilot use **only** and is recommended for deployment in a sandbox environment.
+
 # dpn-flux-deployment
 
 This repository contains the deployment configuration for the DPN Flux application. The deployment configuration is managed using [Helm](https://helm.sh/). 
