@@ -8,6 +8,7 @@ Helm is a package manager for Kubernetes that allows you to define, install, and
 
 ## Prerequisites
 To deploy the DPN Flux application, you will need the following tools installed on your local machine:
+- [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
 - [Helm](https://helm.sh/)
 - [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 - [Flux CLI](https://fluxcd.io/flux/installation/)
