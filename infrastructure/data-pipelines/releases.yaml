@@ -6,7 +6,7 @@ metadata:
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
-  name: eq-ingestion-adaptor
+  name: [DATA_PRODUCT]-ingestion-adaptor
   namespace: flux-system
 spec:
   interval: 1h0m0s
@@ -17,34 +17,34 @@ spec:
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: eq-ingestion-adaptor
+  name: [DATA_PRODUCT]-ingestion-adaptor
   namespace: flux-system
 spec:
   interval: 1m0s
   driftDetection:
     mode: enabled
   targetNamespace: dsi-data-pipelines
-  releaseName: eq-ingestion-adaptor
+  releaseName: [DATA_PRODUCT]-ingestion-adaptor
   install:
     createNamespace: true
   upgrade:
     force: true
   chart:
     spec:
-      chart: helm/adaptor-eq
+      chart: helm/adaptor-[DATA_PRODUCT]
       sourceRef:
         kind: HelmRepository
-        name: eq-ingestion-adaptor
+        name: [DATA_PRODUCT]-ingestion-adaptor
         namespace: flux-system
       version: "*"
   values:
     image_semver: YOUR_IMAGE_SEMVER
-    image_name: YOUR_ACR_NAME.azurecr.io/dsi/adaptor-eq
+    image_name: YOUR_ACR_NAME.azurecr.io/[IMAGE_NAME]
 ---
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
-  name: eqbd-ingestion-adaptor
+  name: [DATA_PRODUCT]-mapper-schema-assurance
   namespace: flux-system
 spec:
   interval: 1h0m0s
@@ -55,34 +55,34 @@ spec:
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: eqbd-ingestion-adaptor
+  name: [DATA_PRODUCT]-mapper-schema-assurance
   namespace: flux-system
 spec:
   interval: 1m0s
   driftDetection:
     mode: enabled
   targetNamespace: dsi-data-pipelines
-  releaseName: eqbd-ingestion-adaptor
+  releaseName: [DATA_PRODUCT]-mapper-schema-assurance
   install:
     createNamespace: true
   upgrade:
     force: true
   chart:
     spec:
-      chart: helm/adaptor-eqbd
+      chart: helm/mapper-schema-assurance-[DATA_PRODUCT]
       sourceRef:
         kind: HelmRepository
-        name: eqbd-ingestion-adaptor
+        name: [DATA_PRODUCT]-mapper-schema-assurance
         namespace: flux-system
       version: "*"
   values:
     image_semver: YOUR_IMAGE_SEMVER
-    image_name: YOUR_ACR_NAME.azurecr.io/dsi/adaptor-eqbd
+    image_name: YOUR_ACR_NAME.azurecr.io/[IMAGE_NAME]
 ---
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
-  name: ssh-ingestion-adaptor
+  name: [DATA_PRODUCT]-mapper-security-labels
   namespace: flux-system
 spec:
   interval: 1h0m0s
@@ -93,318 +93,14 @@ spec:
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: ssh-ingestion-adaptor
+  name: [DATA_PRODUCT]-mapper-security-labels
   namespace: flux-system
 spec:
   interval: 1m0s
   driftDetection:
     mode: enabled
   targetNamespace: dsi-data-pipelines
-  releaseName: ssh-ingestion-adaptor
-  install:
-    createNamespace: true
-  upgrade:
-    force: true
-  chart:
-    spec:
-      chart: helm/adaptor-ssh
-      sourceRef:
-        kind: HelmRepository
-        name: ssh-ingestion-adaptor
-        namespace: flux-system
-      version: "*"
-  values:
-    image_semver: YOUR_IMAGE_SEMVER
-    image_name: YOUR_ACR_NAME.azurecr.io/dsi/adaptor-ssh
----
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
-metadata:
-  name: dl-ingestion-adaptor
-  namespace: flux-system
-spec:
-  interval: 1h0m0s
-  url: oci://YOUR_ACR_NAME.azurecr.io
-  type: oci
-  provider: azure
----
-apiVersion: helm.toolkit.fluxcd.io/v2
-kind: HelmRelease
-metadata:
-  name: dl-ingestion-adaptor
-  namespace: flux-system
-spec:
-  interval: 1m0s
-  driftDetection:
-    mode: enabled
-  targetNamespace: dsi-data-pipelines
-  releaseName: dl-ingestion-adaptor
-  install:
-    createNamespace: true
-  upgrade:
-    force: true
-  chart:
-    spec:
-      chart: helm/adaptor-dl
-      sourceRef:
-        kind: HelmRepository
-        name: dl-ingestion-adaptor
-        namespace: flux-system
-      version: "*"
-  values:
-    image_semver: YOUR_IMAGE_SEMVER
-    image_name: YOUR_ACR_NAME.azurecr.io/dsi/adaptor-dl
----
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
-metadata:
-  name: load-ingestion-adaptor
-  namespace: flux-system
-spec:
-  interval: 1h0m0s
-  url: oci://YOUR_ACR_NAME.azurecr.io
-  type: oci
-  provider: azure
----
-apiVersion: helm.toolkit.fluxcd.io/v2
-kind: HelmRelease
-metadata:
-  name: load-ingestion-adaptor
-  namespace: flux-system
-spec:
-  interval: 1m0s
-  driftDetection:
-    mode: enabled
-  targetNamespace: dsi-data-pipelines
-  releaseName: load-ingestion-adaptor
-  install:
-    createNamespace: true
-  upgrade:
-    force: true
-  chart:
-    spec:
-      chart: helm/adaptor-load
-      sourceRef:
-        kind: HelmRepository
-        name: load-ingestion-adaptor
-        namespace: flux-system
-      version: "*"
-  values:
-    image_semver: YOUR_IMAGE_SEMVER
-    image_name: YOUR_ACR_NAME.azurecr.io/dsi/adaptor-load
----
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
-metadata:
-  name: eq-mapper-schema-assurance
-  namespace: flux-system
-spec:
-  interval: 1h0m0s
-  url: oci://YOUR_ACR_NAME.azurecr.io
-  type: oci
-  provider: azure
----
-apiVersion: helm.toolkit.fluxcd.io/v2
-kind: HelmRelease
-metadata:
-  name: eq-mapper-schema-assurance
-  namespace: flux-system
-spec:
-  interval: 1m0s
-  driftDetection:
-    mode: enabled
-  targetNamespace: dsi-data-pipelines
-  releaseName: eq-mapper-schema-assurance
-  install:
-    createNamespace: true
-  upgrade:
-    force: true
-  chart:
-    spec:
-      chart: helm/mapper-schema-assurance-eq
-      sourceRef:
-        kind: HelmRepository
-        name: eq-mapper-schema-assurance
-        namespace: flux-system
-      version: "*"
-  values:
-    image_semver: YOUR_IMAGE_SEMVER
-    image_name: YOUR_ACR_NAME.azurecr.io/dsi/mapper-schema-assurance-eq
----
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
-metadata:
-  name: eqbd-mapper-schema-assurance
-  namespace: flux-system
-spec:
-  interval: 1h0m0s
-  url: oci://YOUR_ACR_NAME.azurecr.io
-  type: oci
-  provider: azure
----
-apiVersion: helm.toolkit.fluxcd.io/v2
-kind: HelmRelease
-metadata:
-  name: eqbd-mapper-schema-assurance
-  namespace: flux-system
-spec:
-  interval: 1m0s
-  driftDetection:
-    mode: enabled
-  targetNamespace: dsi-data-pipelines
-  releaseName: eqbd-mapper-schema-assurance
-  install:
-    createNamespace: true
-  upgrade:
-    force: true
-  chart:
-    spec:
-      chart: helm/mapper-schema-assurance-eqbd
-      sourceRef:
-        kind: HelmRepository
-        name: eqbd-mapper-schema-assurance
-        namespace: flux-system
-      version: "*"
-  values:
-    image_semver: YOUR_IMAGE_SEMVER
-    image_name: YOUR_ACR_NAME.azurecr.io/dsi/mapper-schema-assurance-eqbd
----
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
-metadata:
-  name: dl-mapper-schema-assurance
-  namespace: flux-system
-spec:
-  interval: 1h0m0s
-  url: oci://YOUR_ACR_NAME.azurecr.io
-  type: oci
-  provider: azure
----
-apiVersion: helm.toolkit.fluxcd.io/v2
-kind: HelmRelease
-metadata:
-  name: dl-mapper-schema-assurance
-  namespace: flux-system
-spec:
-  interval: 1m0s
-  driftDetection:
-    mode: enabled
-  targetNamespace: dsi-data-pipelines
-  releaseName: dl-mapper-schema-assurance
-  install:
-    createNamespace: true
-  upgrade:
-    force: true
-  chart:
-    spec:
-      chart: helm/mapper-schema-assurance-dl
-      sourceRef:
-        kind: HelmRepository
-        name: dl-mapper-schema-assurance
-        namespace: flux-system
-      version: "*"
-  values:
-    image_semver: YOUR_IMAGE_SEMVER
-    image_name: YOUR_ACR_NAME.azurecr.io/dsi/mapper-schema-assurance-dl
----
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
-metadata:
-  name: ssh-mapper-schema-assurance
-  namespace: flux-system
-spec:
-  interval: 1h0m0s
-  url: oci://YOUR_ACR_NAME.azurecr.io
-  type: oci
-  provider: azure
----
-apiVersion: helm.toolkit.fluxcd.io/v2
-kind: HelmRelease
-metadata:
-  name: ssh-mapper-schema-assurance
-  namespace: flux-system
-spec:
-  interval: 1m0s
-  driftDetection:
-    mode: enabled
-  targetNamespace: dsi-data-pipelines
-  releaseName: ssh-mapper-schema-assurance
-  install:
-    createNamespace: true
-  upgrade:
-    force: true
-  chart:
-    spec:
-      chart: helm/mapper-schema-assurance-ssh
-      sourceRef:
-        kind: HelmRepository
-        name: ssh-mapper-schema-assurance
-        namespace: flux-system
-      version: "*"
-  values:
-    image_semver: YOUR_IMAGE_SEMVER
-    image_name: YOUR_ACR_NAME.azurecr.io/dsi/mapper-schema-assurance-ssh
----
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
-metadata:
-  name: load-mapper-schema-assurance
-  namespace: flux-system
-spec:
-  interval: 1h0m0s
-  url: oci://YOUR_ACR_NAME.azurecr.io
-  type: oci
-  provider: azure
----
-apiVersion: helm.toolkit.fluxcd.io/v2
-kind: HelmRelease
-metadata:
-  name: load-mapper-schema-assurance
-  namespace: flux-system
-spec:
-  interval: 1m0s
-  driftDetection:
-    mode: enabled
-  targetNamespace: dsi-data-pipelines
-  releaseName: load-mapper-schema-assurance
-  install:
-    createNamespace: true
-  upgrade:
-    force: true
-  chart:
-    spec:
-      chart: helm/mapper-schema-assurance-load
-      sourceRef:
-        kind: HelmRepository
-        name: load-mapper-schema-assurance
-        namespace: flux-system
-      version: "*"
-  values:
-    image_semver: YOUR_IMAGE_SEMVER
-    image_name: YOUR_ACR_NAME.azurecr.io/dsi/mapper-schema-assurance-load
----
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
-metadata:
-  name: eq-mapper-security-labels
-  namespace: flux-system
-spec:
-  interval: 1h0m0s
-  url: oci://YOUR_ACR_NAME.azurecr.io
-  type: oci
-  provider: azure
----
-apiVersion: helm.toolkit.fluxcd.io/v2
-kind: HelmRelease
-metadata:
-  name: eq-mapper-security-labels
-  namespace: flux-system
-spec:
-  interval: 1m0s
-  driftDetection:
-    mode: enabled
-  targetNamespace: dsi-data-pipelines
-  releaseName: eq-mapper-security-labels
+  releaseName: [DATA_PRODUCT]-mapper-security-labels
   install:
     createNamespace: true
   upgrade:
@@ -414,17 +110,17 @@ spec:
       chart: helm/mapper-security-labels
       sourceRef:
         kind: HelmRepository
-        name: eq-mapper-security-labels
+        name: [DATA_PRODUCT]-mapper-security-labels
         namespace: flux-system
       version: "*"
   values:
     image_semver: YOUR_IMAGE_SEMVER
-    image_name: YOUR_ACR_NAME.azurecr.io/dsi/mapper-security-labels-eq
+    image_name: YOUR_ACR_NAME.azurecr.io/[IMAGE_NAME]
 ---
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
-  name: ssh-mapper-security-labels
+  name: [DATA_PRODUCT]-mapper-extractor
   namespace: flux-system
 spec:
   interval: 1h0m0s
@@ -435,332 +131,26 @@ spec:
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: ssh-mapper-security-labels
+  name: [DATA_PRODUCT]-mapper-extractor
   namespace: flux-system
 spec:
   interval: 1m0s
   driftDetection:
     mode: enabled
   targetNamespace: dsi-data-pipelines
-  releaseName: ssh-mapper-security-labels
+  releaseName: [DATA_PRODUCT]-mapper-extractor
   install:
     createNamespace: true
   upgrade:
     force: true
   chart:
     spec:
-      chart: helm/mapper-security-labels-ssh
+      chart: helm/mapper-extractor-[DATA_PRODUCT]
       sourceRef:
         kind: HelmRepository
-        name: ssh-mapper-security-labels
+        name: [DATA_PRODUCT]-mapper-extractor
         namespace: flux-system
       version: "*"
   values:
     image_semver: YOUR_IMAGE_SEMVER
-    image_name: YOUR_ACR_NAME.azurecr.io/dsi/mapper-security-labels-ssh
----
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
-metadata:
-  name: eqbd-mapper-security-labels
-  namespace: flux-system
-spec:
-  interval: 1h0m0s
-  url: oci://YOUR_ACR_NAME.azurecr.io
-  type: oci
-  provider: azure
----
-apiVersion: helm.toolkit.fluxcd.io/v2
-kind: HelmRelease
-metadata:
-  name: eqbd-mapper-security-labels
-  namespace: flux-system
-spec:
-  interval: 1m0s
-  driftDetection:
-    mode: enabled
-  targetNamespace: dsi-data-pipelines
-  releaseName: eqbd-mapper-security-labels
-  install:
-    createNamespace: true
-  upgrade:
-    force: true
-  chart:
-    spec:
-      chart: helm/mapper-security-labels-eqbd
-      sourceRef:
-        kind: HelmRepository
-        name: eqbd-mapper-security-labels
-        namespace: flux-system
-      version: "*"
-  values:
-    image_semver: YOUR_IMAGE_SEMVER
-    image_name: YOUR_ACR_NAME.azurecr.io/dsi/mapper-security-labels-eqbd
----
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
-metadata:
-  name: dl-mapper-security-labels
-  namespace: flux-system
-spec:
-  interval: 1h0m0s
-  url: oci://YOUR_ACR_NAME.azurecr.io
-  type: oci
-  provider: azure
----
-apiVersion: helm.toolkit.fluxcd.io/v2
-kind: HelmRelease
-metadata:
-  name: dl-mapper-security-labels
-  namespace: flux-system
-spec:
-  interval: 1m0s
-  driftDetection:
-    mode: enabled
-  targetNamespace: dsi-data-pipelines
-  releaseName: dl-mapper-security-labels
-  install:
-    createNamespace: true
-  upgrade:
-    force: true
-  chart:
-    spec:
-      chart: helm/mapper-security-labels-dl
-      sourceRef:
-        kind: HelmRepository
-        name: dl-mapper-security-labels
-        namespace: flux-system
-      version: "*"
-  values:
-    image_semver: YOUR_IMAGE_SEMVER
-    image_name: YOUR_ACR_NAME.azurecr.io/dsi/mapper-security-labels-dl
----
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
-metadata:
-  name: load-mapper-security-labels
-  namespace: flux-system
-spec:
-  interval: 1h0m0s
-  url: oci://YOUR_ACR_NAME.azurecr.io
-  type: oci
-  provider: azure
----
-apiVersion: helm.toolkit.fluxcd.io/v2
-kind: HelmRelease
-metadata:
-  name: load-mapper-security-labels
-  namespace: flux-system
-spec:
-  interval: 1m0s
-  driftDetection:
-    mode: enabled
-  targetNamespace: dsi-data-pipelines
-  releaseName: load-mapper-security-labels
-  install:
-    createNamespace: true
-  upgrade:
-    force: true
-  chart:
-    spec:
-      chart: helm/mapper-security-labels-load
-      sourceRef:
-        kind: HelmRepository
-        name: load-mapper-security-labels
-        namespace: flux-system
-      version: "*"
-  values:
-    image_semver: YOUR_IMAGE_SEMVER
-    image_name: YOUR_ACR_NAME.azurecr.io/dsi/mapper-security-labels-load
----
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
-metadata:
-  name: eq-mapper-extractor
-  namespace: flux-system
-spec:
-  interval: 1h0m0s
-  url: oci://YOUR_ACR_NAME.azurecr.io
-  type: oci
-  provider: azure
----
-apiVersion: helm.toolkit.fluxcd.io/v2
-kind: HelmRelease
-metadata:
-  name: eq-mapper-extractor
-  namespace: flux-system
-spec:
-  interval: 1m0s
-  driftDetection:
-    mode: enabled
-  targetNamespace: dsi-data-pipelines
-  releaseName: eq-mapper-extractor
-  install:
-    createNamespace: true
-  upgrade:
-    force: true
-  chart:
-    spec:
-      chart: helm/mapper-extractor-eq
-      sourceRef:
-        kind: HelmRepository
-        name: eq-mapper-extractor
-        namespace: flux-system
-      version: "*"
-  values:
-    image_semver: YOUR_IMAGE_SEMVER
-    image_name: YOUR_ACR_NAME.azurecr.io/dsi/mapper-extractor-eq
----
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
-metadata:
-  name: eqbd-mapper-extractor
-  namespace: flux-system
-spec:
-  interval: 1h0m0s
-  url: oci://YOUR_ACR_NAME.azurecr.io
-  type: oci
-  provider: azure
----
-apiVersion: helm.toolkit.fluxcd.io/v2
-kind: HelmRelease
-metadata:
-  name: eqbd-mapper-extractor
-  namespace: flux-system
-spec:
-  interval: 1m0s
-  driftDetection:
-    mode: enabled
-  targetNamespace: dsi-data-pipelines
-  releaseName: eqbd-mapper-extractor
-  install:
-    createNamespace: true
-  upgrade:
-    force: true
-  chart:
-    spec:
-      chart: helm/mapper-extractor-eqbd
-      sourceRef:
-        kind: HelmRepository
-        name: eqbd-mapper-extractor
-        namespace: flux-system
-      version: "*"
-  values:
-    image_semver: YOUR_IMAGE_SEMVER
-    image_name: YOUR_ACR_NAME.azurecr.io/dsi/mapper-extractor-eqbd
----
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
-metadata:
-  name: ssh-mapper-extractor
-  namespace: flux-system
-spec:
-  interval: 1h0m0s
-  url: oci://YOUR_ACR_NAME.azurecr.io
-  type: oci
-  provider: azure
----
-apiVersion: helm.toolkit.fluxcd.io/v2
-kind: HelmRelease
-metadata:
-  name: ssh-mapper-extractor
-  namespace: flux-system
-spec:
-  interval: 1m0s
-  driftDetection:
-    mode: enabled
-  targetNamespace: dsi-data-pipelines
-  releaseName: ssh-mapper-extractor
-  install:
-    createNamespace: true
-  upgrade:
-    force: true
-  chart:
-    spec:
-      chart: helm/mapper-extractor-ssh
-      sourceRef:
-        kind: HelmRepository
-        name: ssh-mapper-extractor
-        namespace: flux-system
-      version: "*"
-  values:
-    image_semver: YOUR_IMAGE_SEMVER
-    image_name: YOUR_ACR_NAME.azurecr.io/dsi/mapper-extractor-ssh
----
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
-metadata:
-  name: dl-mapper-extractor
-  namespace: flux-system
-spec:
-  interval: 1h0m0s
-  url: oci://YOUR_ACR_NAME.azurecr.io
-  type: oci
-  provider: azure
----
-apiVersion: helm.toolkit.fluxcd.io/v2
-kind: HelmRelease
-metadata:
-  name: dl-mapper-extractor
-  namespace: flux-system
-spec:
-  interval: 1m0s
-  driftDetection:
-    mode: enabled
-  targetNamespace: dsi-data-pipelines
-  releaseName: dl-mapper-extractor
-  install:
-    createNamespace: true
-  upgrade:
-    force: true
-  chart:
-    spec:
-      chart: helm/mapper-extractor-dl
-      sourceRef:
-        kind: HelmRepository
-        name: dl-mapper-extractor
-        namespace: flux-system
-      version: "*"
-  values:
-    image_semver: YOUR_IMAGE_SEMVER
-    image_name: YOUR_ACR_NAME.azurecr.io/dsi/mapper-extractor-dl
-
----
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
-metadata:
-  name: load-mapper-extractor
-  namespace: flux-system
-spec:
-  interval: 1h0m0s
-  url: oci://YOUR_ACR_NAME.azurecr.io
-  type: oci
-  provider: azure
----
-apiVersion: helm.toolkit.fluxcd.io/v2
-kind: HelmRelease
-metadata:
-  name: load-mapper-extractor
-  namespace: flux-system
-spec:
-  interval: 1m0s
-  driftDetection:
-    mode: enabled
-  targetNamespace: dsi-data-pipelines
-  releaseName: load-mapper-extractor
-  install:
-    createNamespace: true
-  upgrade:
-    force: true
-  chart:
-    spec:
-      chart: helm/mapper-extractor-load
-      sourceRef:
-        kind: HelmRepository
-        name: load-mapper-extractor
-        namespace: flux-system
-      version: "*"
-  values:
-    image_semver: YOUR_IMAGE_SEMVER
-    image_name: YOUR_ACR_NAME.azurecr.io/dsi/mapper-extractor-load
-
+    image_name: YOUR_ACR_NAME.azurecr.io/[IMAGE_NAME]
