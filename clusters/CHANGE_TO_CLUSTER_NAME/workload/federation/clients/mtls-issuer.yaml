@@ -1,0 +1,49 @@
+# all the namespace here get overriden by the kustomization.yaml in the same directory
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: vault-issuer
+  namespace: tc-federation
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: vault-issuer
+  namespace: tc-federation
+spec:
+  vault:
+    server: ${vault_url}
+    path: pki/sign/neso
+    auth:
+      kubernetes:
+        role: ${cluster_name} # this is the auth role created in vault
+        mountPath: /v1/auth/${cluster_name} # this is the path where the auth role is mounted in vault
+        serviceAccountRef:
+          name: vault-issuer
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: vault-issuer
+  namespace: tc-federation
+rules:
+  - apiGroups: ['']
+    resources: ['serviceaccounts/token']
+    resourceNames: ['vault-issuer']
+    verbs: ['create']
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: vault-issuer
+  namespace: tc-federation
+subjects:
+  - kind: ServiceAccount
+    name: cert-manager
+    namespace: cert-manager
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: vault-issuer
+---

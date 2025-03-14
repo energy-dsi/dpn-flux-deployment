@@ -1,0 +1,110 @@
+#  Copyright (c) Telicent Ltd.
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+#
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+
+metadata:
+  name: graph-server-ingress
+
+spec:
+  hosts:
+    - "hosts.override.required"
+
+  gateways:
+    - istio-system/ingress-gateway
+
+  http:
+    - match:
+        - uri:
+            prefix: /api/sparql/knowledge/sparql
+      rewrite:
+        uri: /knowledge/sparql
+
+      route:
+        - destination:
+            host: graph-server
+            port:
+              number: 3030
+
+    - match:
+        - uri:
+            prefix: /api/sparql/knowledge/query
+      rewrite:
+        uri: /knowledge/query
+
+      route:
+        - destination:
+            host: graph-server
+            port:
+              number: 3030
+
+    - match:
+        - uri:
+            prefix: /api/sparql/knowledge/graphql
+      rewrite:
+        uri: /knowledge/graphql
+
+      route:
+        - destination:
+            host: graph-server
+            port:
+              number: 3030
+
+    - match:
+        - uri:
+            prefix: /api/sparql/ontology/sparql
+      rewrite:
+        uri: /ontology/sparql
+
+      route:
+        - destination:
+            host: graph-server
+            port:
+              number: 3030
+
+    - match:
+        - uri:
+            prefix: /api/sparql/ontology/query
+      rewrite:
+        uri: /ontology/query
+
+      route:
+        - destination:
+            host: graph-server
+            port:
+              number: 3030
+
+    - match:
+        - uri:
+            prefix: /api/sparql/catalog/sparql
+      rewrite:
+        uri: /catalog/sparql
+
+      route:
+        - destination:
+            host: graph-server
+            port:
+              number: 3030
+
+    - match:
+        - uri:
+            prefix: /api/sparql/catalog/query
+      rewrite:
+        uri: /catalog/query
+
+      route:
+        - destination:
+            host: graph-server
+            port:
+              number: 3030

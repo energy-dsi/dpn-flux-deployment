@@ -1,0 +1,77 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: jetstack
+  namespace: flux-system
+spec:
+  interval: 1h0m0s
+  url: https://charts.jetstack.io
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: cert-manager
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  driftDetection:
+    mode: enabled
+  targetNamespace: cert-manager
+  releaseName: cert-manager
+  install:
+    createNamespace: true
+  upgrade:
+    force: true
+  chart:
+    spec:
+      chart: cert-manager
+      sourceRef:
+        kind: HelmRepository
+        name: jetstack
+        namespace: flux-system
+      version: "*"
+  values:
+    crds:
+      enabled: true
+      keep: true
+    serviceAccount:
+      annotations:
+        eks.amazonaws.com/role-arn: arn:aws:iam::${aws_act_no}:role/${cluster_name}-cert-manager-acme-dns01-route53
+    enableCertificateOwnerRef: true
+    securityContext:
+      fsGroup: 1001
+---
+# https://cert-manager.io/docs/tutorials/getting-started-aws-letsencrypt/#grant-permission-for-cert-manager-to-create-serviceaccount-tokens
+# apiVersion: rbac.authorization.k8s.io/v1
+# kind: Role
+# metadata:
+#   name: cert-manager-tokenrequest
+#   namespace: cert-manager
+# rules:
+#   - apiGroups: ['']
+#     resources: ['serviceaccounts/token']
+#     resourceNames: ['cert-manager']
+#     verbs: ['create']
+# ---
+# apiVersion: rbac.authorization.k8s.io/v1
+# kind: RoleBinding
+# metadata:
+#   name: cert-manager-cert-manager-tokenrequest
+#   namespace: cert-manager
+# subjects:
+#   - kind: ServiceAccount
+#     name: cert-manager
+#     namespace: cert-manager
+# roleRef:
+#   apiGroup: rbac.authorization.k8s.io
+#   kind: Role
+#   name: cert-manager-tokenrequest
+
+
+
+# kubectl label crd ec2nodeclasses.karpenter.k8s.aws app.kubernetes.io/managed-by=Helm --overwrite
+# kubectl label crd nodeclaims.karpenter.sh app.kubernetes.io/managed-by=Helm --overwrite
+# kubectl label crd nodepools.karpenter.sh app.kubernetes.io/managed-by=Helm --overwrite
+# "re-queuing item due to error processing" err="error getting service account token: failed to request token for cert-manager/cert-manager: serviceaccounts \"cert-manager\" is forbidden: Use
+# r \"system:serviceaccount:cert-manager:cert-manager\" cannot create resource \"serviceaccounts/token\" in API group \"\" in the namespace \"cert-manager\"" logger="cert-manager.controller" key="foo/foo-1-423214965-
+# 2925438771"

@@ -1,0 +1,66 @@
+# https://cert-manager.io/docs/configuration/vault/#option-1-vault-authentication-method-use-jwtoidc-auth
+#this perms are required to list secrets for mtls
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: federator-client-role
+  namespace: tc-federation
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: federator-client-role-binding
+  namespace: tc-federation
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: federator-client-role
+subjects:
+  - kind: ServiceAccount
+    name: federator-client
+---
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+metadata:
+  name: originate-mtls-federator-client
+  namespace: tc-federation
+spec:
+  workloadSelector:
+    matchLabels:
+      app: federator-client
+  host: ${data_producer1_domain}
+  trafficPolicy:
+    loadBalancer:
+      simple: ROUND_ROBIN
+    portLevelSettings:
+    - port:
+        number: 80
+      tls:
+        mode: MUTUAL
+        credentialName: federator-client-mtls- # this must match the secret created earlier to hold client certs, and works only when DR has a workloadSelector
+        sni: ${data_producer1_domain}
+        # subjectAltNames: # can be enabled if the certificate was generated with SAN as specified in previous section
+        # - ${data_producer1_domain}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: federator-client-mtls
+  namespace: tc-federation  # this namespace so that pod can access the secret
+spec:
+  secretName: federator-client-mtls-
+  issuerRef:
+    name: vault-issuer
+  commonName: "${data_producer1_domain}"
+  dnsNames:
+  - "${data_producer1_domain}"
+  uris:
+  - spiffe://${ia_domain}/client
+  privateKey:
+    algorithm: ECDSA       # Specify ECDSA (Elliptic Curve)
+    size: 256              # Common EC key sizes are 256, 384, or 521
+---

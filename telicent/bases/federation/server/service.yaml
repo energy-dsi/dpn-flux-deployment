@@ -1,0 +1,15 @@
+#
+# Copyright (C) 2024 Telicent Limited
+#
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: federator-server
+
+spec:
+  selector:
+    app.kubernetes.io/name: federator-server
+  ports:
+    - name: grpc # important!
+      port: 8080

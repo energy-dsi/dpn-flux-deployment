@@ -1,0 +1,75 @@
+repos:
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v4.6.0
+  hooks:
+    # Git style
+    - id: check-added-large-files
+    - id: check-merge-conflict
+    - id: check-vcs-permalinks
+    - id: forbid-new-submodules
+    # - id: no-commit-to-branch
+
+    # sort requirements.txt
+    - id: requirements-txt-fixer
+
+    # Common errors
+    - id: end-of-file-fixer
+    - id: trailing-whitespace
+      args: [--markdown-linebreak-ext=md]
+      exclude: CHANGELOG.md
+    # - id: check-yaml
+    - id: check-json
+    - id: check-merge-conflict
+    - id: check-executables-have-shebangs
+
+    # python
+     # - id: check-ast # valid python
+    #  - id: debug-statements # breakpoints python
+
+    # Cross platform
+    - id: check-case-conflict
+    - id: mixed-line-ending
+      args: [--fix=lf]
+
+    # Security
+    - id: detect-aws-credentials
+      args: ['--allow-missing-credentials']
+    - id: detect-private-key
+
+-   repo: https://github.com/gruntwork-io/pre-commit
+    rev: v0.1.23
+    hooks:
+      # - id: terraform-fmt
+      # - id: terraform-validate
+      # - id: tflint
+      #   args: [--minimum-failure-severity=error]
+      - id: shellcheck
+      - id: helmlint
+-   repo: https://github.com/tarioch/flux-check-hook
+    rev: v0.4.0
+    hooks:
+    -   id: check-flux-helm-values
+
+-   repo: https://github.com/bridgecrewio/checkov.git
+    rev: 3.2.60
+    hooks:
+      - id: checkov
+        args: [--quiet, --soft-fail, -d .]
+
+-   repo: https://github.com/Agilicus/pre-commit-hook-k8svalidate
+    rev: v0.2.0
+    hooks:
+      - id: k8svalidate
+        files: .yaml$
+
+# -   repo: https://github.com/yuvipanda/pre-commit-hook-ensure-sops
+#     rev: v1.1
+#     hooks:
+#       - id: sops-encryption
+#         # Uncomment to exclude all markdown files from encryption
+#         # exclude: *.\.md
+
+-   repo: https://github.com/onedr0p/sops-pre-commit
+    rev: v2.1.1
+    hooks:
+      - id: forbid-secrets

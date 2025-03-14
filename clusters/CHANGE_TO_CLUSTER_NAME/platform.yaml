@@ -1,0 +1,149 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cert-manager
+  namespace: flux-system
+spec:
+  interval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./infrastructure/cert-manager
+  prune: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cert-manager-issuers
+  namespace: flux-system
+spec:
+  interval: 1m
+  dependsOn:
+    - name: cert-manager
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./infrastructure/cert-manager/issuers
+  prune: true
+---
+ apiVersion: kustomize.toolkit.fluxcd.io/v1
+ kind: Kustomization
+ metadata:
+   name: istio
+   namespace: flux-system
+ spec:
+   interval: 1m
+   dependsOn:
+     - name: cert-manager
+   sourceRef:
+     kind: GitRepository
+     name: flux-system
+   path: ./infrastructure/istio
+   prune: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: redis
+  namespace: flux-system
+spec:
+  interval: 1m
+  timeout: 5m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./infrastructure/redis
+  prune: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: grafana
+  namespace: flux-system
+spec:
+  interval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./infrastructure/grafana
+  prune: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: keycloak
+  namespace: flux-system
+spec:
+  interval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./infrastructure/keycloak
+  prune: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: app-configs
+  namespace: flux-system
+spec:
+  interval: 30m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./clusters/CHANGE_TO_YOUR_CLUSTER_NAME/configs
+  prune: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: telicent-workload-core
+  namespace: flux-system
+spec:
+  interval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./clusters/CHANGE_TO_YOUR_CLUSTER_NAME/workload/core
+  prune: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+ name: telicent-workload-federation
+ namespace: flux-system
+spec:
+ interval: 1m
+ sourceRef:
+   kind: GitRepository
+   name: flux-system
+ path: ./clusters/CHANGE_TO_YOUR_CLUSTER_NAME/workload/federation
+ prune: true
+---
+
+#apiVersion: kustomize.toolkit.fluxcd.io/v1
+#kind: Kustomization
+#metadata:
+#  name: dsi-data-pipelines
+#  namespace: flux-system
+#spec:
+#  interval: 1m
+#  sourceRef:
+#    kind: GitRepository
+#    name: flux-system
+#  path: ./infrastructure/data-pipelines
+#  prune: true
+#---
+
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: authorisation-api
+  namespace: flux-system
+spec:
+  interval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./infrastructure/authorisation-api
+  prune: true

@@ -1,0 +1,179 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: istio
+  namespace: flux-system
+spec:
+  interval: 1h0m0s
+  url: https://istio-release.storage.googleapis.com/charts
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: istio-base
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  driftDetection:
+    mode: warn
+  targetNamespace: istio-system
+  releaseName: istio-base
+  install:
+    createNamespace: true
+  chart:
+    spec:
+      chart: base
+      sourceRef:
+        kind: HelmRepository
+        name: istio
+        namespace: flux-system
+      version: "1.23.5"
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: istio-istiod
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  dependsOn:
+    - name: istio-base
+  driftDetection:
+    mode: warn
+  targetNamespace: istio-system
+  releaseName: istio-istiod
+  install:
+    createNamespace: true
+  chart:
+    spec:
+      chart: istiod
+      sourceRef:
+        kind: HelmRepository
+        name: istio
+        namespace: flux-system
+      version: "1.23.5"
+  values:
+    pilot:
+      autoscaleEnabled: true
+      autoscaleMax: 5
+      autoscaleMin: 3
+    meshConfig:
+      defaultConfig:
+        gatewayTopology:
+          numTrustedProxies: 3
+          forwardClientCertDetails: APPEND_FORWARD
+      accessLogFile: /dev/stdout
+      extensionProviders:
+      - envoyExtAuthzHttp:
+          headersToDownstreamOnDeny:
+          - set-cookie
+          - content-type
+          headersToUpstreamOnAllow:
+          - authorization
+          - x-auth-request-access-token
+          - x-forwarded-client-cert
+          includeHeadersInCheck:
+          - cookie
+          port: "4080"
+          service: oauth2-proxy-external.tc-system.svc.cluster.local
+        name: oauth2-proxy-apps
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: istio-gateway
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  dependsOn:
+    - name: istio-istiod
+  driftDetection:
+    mode: warn
+  targetNamespace: istio-system
+  releaseName: istio-gateway
+  install:
+    createNamespace: true
+  chart:
+    spec:
+      chart: gateway
+      sourceRef:
+        kind: HelmRepository
+        name: istio
+        namespace: flux-system
+      version: "1.23.5"
+  values:
+    labels:
+      istio: ingressgateway
+    service:
+      annotations:
+        service.beta.kubernetes.io/aws-load-balancer-type: external
+        service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
+        service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+        service.beta.kubernetes.io/aws-load-balancer-attributes: load_balancing.cross_zone.enabled=true
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: loki
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  driftDetection:
+    mode: warn
+  targetNamespace: grafana
+  releaseName: loki
+  install:
+    createNamespace: true
+  chart:
+    spec:
+      chart: loki-stack
+      sourceRef:
+        kind: HelmRepository
+        name: grafana
+        namespace: flux-system
+      version: "*"
+  values:
+    loki:
+      persistence:
+        enabled: false
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: alloy
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  driftDetection:
+    mode: warn
+  targetNamespace: grafana
+  releaseName: alloy
+  install:
+    createNamespace: true
+  chart:
+    spec:
+      chart: alloy
+      sourceRef:
+        kind: HelmRepository
+        name: grafana
+        namespace: flux-system
+      version: "*"
+  values:
+    config:
+      sources:
+        kubernetes_logs:
+          type: kubernetes_logs  # Collect logs from pods
+      transforms:
+        parse_json:
+          type: remap  # Optional: Parses JSON logs
+          inputs: ["kubernetes_logs"]
+          source: |
+            .parsed = parse_json!(.message)
+      sinks:
+        loki:
+          type: loki
+          inputs: ["parse_json"]  # Send parsed logs to Loki
+          endpoint: "http://loki:3100"
+          labels:
+            job: "kubernetes"
+            app: "{{ kubernetes.pod_labels.app }}"

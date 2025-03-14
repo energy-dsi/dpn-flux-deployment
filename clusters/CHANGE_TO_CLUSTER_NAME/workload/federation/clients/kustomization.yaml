@@ -1,0 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - mtls-issuer.yaml
+  - mtls-service-entry.yaml
+  - client-1
+  - client-2
+  - incoming-filter-client-1
+  - incoming-filter-client-2

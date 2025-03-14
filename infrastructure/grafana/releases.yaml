@@ -1,0 +1,119 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: grafana
+  namespace: flux-system
+spec:
+  interval: 1h0m0s
+  url: https://grafana.github.io/helm-charts
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: grafana
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  driftDetection:
+    mode: warn
+  targetNamespace: grafana
+  releaseName: grafana
+  install:
+    createNamespace: true
+  chart:
+    spec:
+      chart: grafana
+      sourceRef:
+        kind: HelmRepository
+        name: grafana
+        namespace: flux-system
+      version: "*"
+---
+# apiVersion: helm.toolkit.fluxcd.io/v2
+# kind: HelmRelease
+# metadata:
+#   name: k6-operator
+#   namespace: flux-system
+# spec:
+#   interval: 1m0s
+#   driftDetection:
+#     mode: warn
+#   targetNamespace: grafana
+#   releaseName: k6-operator
+#   # install:
+#   #   createNamespace: true
+#   chart:
+#     spec:
+#       chart: k6-operator
+#       sourceRef:
+#         kind: HelmRepository
+#         name: grafana
+#         namespace: flux-system
+#       version: "*"
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: loki
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  driftDetection:
+    mode: warn
+  targetNamespace: grafana
+  releaseName: loki
+  install:
+    createNamespace: true
+  chart:
+    spec:
+      chart: loki-stack
+      sourceRef:
+        kind: HelmRepository
+        name: grafana
+        namespace: flux-system
+      version: "*"
+  values:
+    loki:
+      persistence:
+        enabled: false
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: alloy
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  driftDetection:
+    mode: warn
+  targetNamespace: grafana
+  releaseName: alloy
+  install:
+    createNamespace: true
+  chart:
+    spec:
+      chart: alloy
+      sourceRef:
+        kind: HelmRepository
+        name: grafana
+        namespace: flux-system
+      version: "*"
+  values:
+    config:
+      sources:
+        kubernetes_logs:
+          type: kubernetes_logs  # Collect logs from pods
+      transforms:
+        parse_json:
+          type: remap  # Optional: Parses JSON logs
+          inputs: ["kubernetes_logs"]
+          source: |
+            .parsed = parse_json!(.message)
+      sinks:
+        loki:
+          type: loki
+          inputs: ["parse_json"]  # Send parsed logs to Loki
+          endpoint: "http://loki:3100"
+          labels:
+            job: "kubernetes"
+            app: "{{ kubernetes.pod_labels.app }}"

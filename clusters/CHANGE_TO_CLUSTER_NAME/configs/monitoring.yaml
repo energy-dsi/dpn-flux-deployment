@@ -1,0 +1,35 @@
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: monitoring
+  namespace: grafana
+spec:
+  hosts:
+  - "monitoring.${domain}"
+  gateways:
+  - istio-system/ingress-gateway
+  http:
+  - match:
+    - uri:
+        prefix: "/"
+    route:
+    - destination:
+        host: grafana.grafana.svc.cluster.local  # Fully qualified service name
+        port:
+          number: 80
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: istio-ingressgateway-cert-monitoring
+  namespace: istio-system
+spec:
+  secretName: istio-ingressgateway-cert-monitoring
+  commonName: "monitoring.${domain}"
+  dnsNames:
+      - "monitoring.${domain}"
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+    group: cert-manager.io
+---

@@ -1,0 +1,17 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+components:
+- ../../../components/patches/labels/telicent/resource
+configMapGenerator:
+- envs:
+  - adapter.env
+  name: adapter
+kind: Kustomization
+labels:
+- includeTemplates: true
+  pairs:
+    app: adapter
+    app.kubernetes.io/name: adapter
+resources:
+- deployment.yaml
+- service.yaml
+- serviceaccount.yaml
