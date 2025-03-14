@@ -202,6 +202,8 @@ Within the incoming filter directory the changes required are as follows:
 - Line 12 the Cosmos DB Port
 - Line 13 replace `YOUR_COSMOS_DB_NAME` with the Cosmos DB Name
 
+---
+
 ### Step 8
 
 #### Update the dpn-flux-deployment/infrastructure/data-pipelines/releases.yaml
