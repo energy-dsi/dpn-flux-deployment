@@ -153,7 +153,7 @@ The workload directory contains the DPN configuration files. As part of the depl
 
 The api.env file populate 
 - Line 1 with the APP Domain e.g. data-sharing.YOUR_DOMAIN. 
-- Line 3 the Cosmos DB Hostname. 
+- Line 3 the Cosmos DB Hostname. e.g. `YOUR_COSMOS_DB_NAME.mongo.cosmos.azure.com:10255/access?ssl=true&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@YOUR_COSMOS_DB_NAME@`
 - Line 4 the Mongo User. 
 - Line 5 the Keycloak Domain e.g. keycloak-data-sharing.YOUR_DOMAIN. 
 - Line 7 the Cosmos Host Name, 
