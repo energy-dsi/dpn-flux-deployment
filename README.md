@@ -81,16 +81,16 @@ On the newly created flux repository checkout a new branch
 ### Step 2
 Copy the following directories from `dpn-flux-deployment`
 
-|    | Source                                                         | Destination                                                |
-|----|:---------------------------------------------------------------|:-----------------------------------------------------------|
-| 1. | `dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/configs`  | `YOUR_REPOSITORY_NAME/clusters/YOUR_CLUSTER_NAME/configs`  |
-| 2. | `dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/workload` | `YOUR_REPOSITORY_NAME/clusters/YOUR_CLUSTER_NAME/workload` |
-| 3. | `dpn-flux-deployment/infrastructure`                           | `YOUR_REPOSITORY_NAME/`                                    |
-| 4. | `dpn-flux-deployment/telicent`                                 | `YOUR_REPOSITORY_NAME/`                                    |
-| 5. | `dpn-flux-deployment/.pre-commit-config.yaml`                  | `YOUR_REPOSITORY_NAME/`                                    |
-| 6. | `dpn-flux-deployment/flux-system/kustomization.yaml`           | Replace the contents of `dpn-flux-deployment/flux-system/kustomization.yaml` to `YOUR_REPOSITORY_NAME/flux-system/kustomization.yaml`|
-| 7. | `dpn-flux-deployment/kustomization.yaml`                       | `YOUR_REPOSITORY_NAME/kustomization.yaml`|
-| 8. | `dpn-flux-deployment/platform.yaml`                            | `YOUR_REPOSITORY_NAME/platform.yaml`|
+|    | Source                                                                               | Destination                                                                                                                                                                                                                                                   |
+|----|:-------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 1. | `dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/configs`                        | `YOUR_REPOSITORY_NAME/clusters/YOUR_CLUSTER_NAME/configs`                                                                                                                                                                                                     |
+| 2. | `dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/workload`                       | `YOUR_REPOSITORY_NAME/clusters/YOUR_CLUSTER_NAME/workload`                                                                                                                                                                                                    |
+| 3. | `dpn-flux-deployment/infrastructure`                                                 | `YOUR_REPOSITORY_NAME/`                                                                                                                                                                                                                                       |
+| 4. | `dpn-flux-deployment/telicent`                                                       | `YOUR_REPOSITORY_NAME/`                                                                                                                                                                                                                                       |
+| 5. | `dpn-flux-deployment/.pre-commit-config.yaml`                                        | `YOUR_REPOSITORY_NAME/`                                                                                                                                                                                                                                       |
+| 6. | `dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/flux-system/kustomization.yaml` | Replace the contents of `YOUR_REPOSITORY_NAME/clusters/YOUR_CLUSTER_NAME/flux-system/kustomization.yaml/` to `dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/flux-system/kustomization.yaml`                                                             |
+| 7. | `dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/kustomization.yaml`             | `YOUR_REPOSITORY_NAME/clusters/YOUR_CLUSTER_NAME/kustomization.yaml`                                                                                                                                                                                      |
+| 8. | `dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/platform.yaml`                                                 | `YOUR_REPOSITORY_NAME/clusters/YOUR_CLUSTER_NAME/platform.yaml`                                                                                                                                                                                               |
 
 ### Step 3
 
