@@ -1,0 +1,40 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: eks-charts
+  namespace: flux-system
+spec:
+  interval: 1m
+  url: https://aws.github.io/eks-charts
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: aws-load-balancer-controller
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  driftDetection:
+    mode: warn
+  targetNamespace: kube-system
+  releaseName: aws-load-balancer-controller  
+  chart:
+    spec:
+      chart: aws-load-balancer-controller
+      sourceRef:
+        kind: HelmRepository
+        name: eks-charts
+        namespace: flux-system
+      version: "*"
+  values:
+    clusterName: ${cluster_env}-eks
+    serviceAccount.create: true
+    serviceAccount.name: aws-load-balancer-controller
+    serviceAccount:
+      annotations:
+        eks.amazonaws.com/role-arn: arn:aws:iam::${aws_act_no}:role/${cluster_env}-eks-AmazonEKSLoadBalancerController
+    logLevel: info
+    region: ${region}
+    replicaCount: 1
+    syncPeriod: 120s
+    vpcId: ${vpc_id}
