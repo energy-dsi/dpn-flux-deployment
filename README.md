@@ -107,6 +107,7 @@ Once you have obtained create a public DNS entry for the DPN software and Keyclo
 - data-sharing.YOUR_DOMAIN
 - keycloak-data-sharing.YOUR_DOMAIN
 - authorisation-data-sharing.YOUR_DOMAIN
+- federator-data-sharing.YOUR_DOMAIN
 
 ### Step 4
 #### Setup Keycloak
