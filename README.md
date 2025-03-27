@@ -149,6 +149,9 @@ Within the kustomization.yaml file, you will need to update the following values
 
 The workload directory contains the DPN configuration files. As part of the deployment process, the Azure Cosmos DB and Event Hubs configuration details are required to populate the necessary configuration files.
 
+#### Update the /dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/workload/core/2-access/kustomization.yaml
+- Line 23 with the Cosmos DB Password
+
 
 #### Update /dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/workload/core/2-access/api/patches/config/api.env
 
