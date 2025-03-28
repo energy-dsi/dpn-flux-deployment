@@ -167,7 +167,7 @@ The api.env file populate
 #### Update /dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/workload/core/2-access/ui/patches/config/env-config.js
 - Line 1 with the APP Domain e.g. data-sharing.YOUR_DOMAIN. 
 
-#### Update /dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/workload/core/3-smart-cache-graph/server/config/config.ttl
+#### Update /dpn-flux-deployment/clusters/CHANGE_TO_CLUSTER_NAME/workload/core/3-smart-cache-graph/server/patches/config/config.ttl
 - Line 253 with the Event Hub Name
 - Line 268 with the Event Hub Name
 
